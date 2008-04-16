@@ -1,0 +1,81 @@
+#!/bin/bash
+alias tms='tail -f `ls -trC1 /opt/ptc/windchill/logs/MethodServer*.log | tail -1`'
+alias tbms='tail -f `ls -trC1 /opt/ptc/windchill/logs/BackgroundMethodServer*.log | tail -1`'
+alias sudow='sudo -u windchill -s'
+alias sudor='sudo -u root -s'
+
+#windchill commands
+alias astop='/opt/ptc/apache/bin/apachectl stop'
+alias astart='/opt/ptc/apache/bin/apachectl startssl'
+alias tstop='/opt/ptc/tomcat/bin/wttomcat_stop'
+alias tstart='/opt/ptc/tomcat/bin/wttomcat_start'
+alias ttc='tail -f `ls -trC1 /opt/ptc/tomcat/logs/localhost_PDM* | tail -1`'
+alias ws='/opt/ptc/windchill/bin/windchill shell'
+alias wstart='/opt/ptc/windchill/bin/windchill start'
+alias wstop='/opt/ptc/windchill/bin/windchill stop'
+alias wjavac='javac -d /opt/ptc/windchill/codebase $1'
+alias wcbanner='vi /opt/ptc/windchill/codebase/netmarkets/jsp/util/banner.txt'
+
+#screen commands
+alias sls='screen -ls'
+alias sat='screen -r -x $1'
+alias clog='screen -S mslog tail -f /opt/ptc/windchill/logs/MethodServer.log'
+alias smslog='screen -x mslog -r'
+alias sbmlog='screen -x bmlog -r'
+alias susers='screen -x users -r'
+alias stomcat='screen -x tomcat -r'
+
+   
+# some more ls aliases
+alias ll='ls -ltr'
+alias la='ls -Al'
+alias l='ls -CF'
+alias lll='ls -ltr | less'
+
+alias lsora='ls -ltr /opt/ptc/windchill/extract/outbound/ORACLE/**/*'
+alias lsarc='ls -ltr /opt/ptc/windchill/extract/archive/*'
+alias garc='ls -ltr /opt/ptc/windchill/extract/archive/* | grep'
+
+# change directory commands
+alias cdwc='cd /opt/ptc/windchill'
+alias cdcode='cd /opt/ptc/windchill/codebase'
+alias cdlogs='cd /opt/ptc/windchill/logs'
+alias cdcustom='cd /opt/ptc/windchill/wtCustom'
+alias cdtomcat='cd /opt/ptc/tomcat'
+alias cdapache='cd /opt/ptc/apache'
+alias cdora='cd /opt/ptc/windchill/extract/outbound/ORACLE'
+alias cdarc='cd /opt/ptc/windchill/extract/archive/'
+
+#run profile
+alias profile='source /home/windchill/.profile'
+
+#open specific files
+alias viprofile='vim /home/windchill/.profile'
+alias visite='vim /opt/ptc/windchill/site.xconf'
+alias viwt='vim /opt/ptc/windchill/codebase/wt.properties'
+alias viservice='vim /opt/ptc/windchill/codebase/service.properties'
+alias viie='vim /opt/ptc/windchill/codebase/WEB-INF/ie.properties'
+alias vidb='vim /opt/ptc/windchill/db/db.properties'
+
+#view specific files
+alias lprofile='less /home/windchill/.profile'
+alias lsite='less /opt/ptc/windchill/site.xconf'
+alias lwt='less /opt/ptc/windchill/codebase/wt.properties'
+alias lservice='less /opt/ptc/windchill/codebase/service.properties'
+alias lie='less /opt/ptc/windchill/codebase/WEB-INF/ie.properties'
+alias ldb='less /opt/ptc/windchill/db/db.properties'
+alias lms='less `ls -trC1 /opt/ptc/windchill/logs/MethodServer*.log | tail -1`'
+alias lbms='less `ls -trC1 /opt/ptc/windchill/logs/BackgroundMethodServer*.log | tail -1`'
+
+
+
+#copy this profile to other servers
+alias cyprofile='scp /home/windchill/.profile windchill@heatstroke:~/ && scp /home/windchill/.profile windchill@frostbite:~/'
+alias chprofile='scp /home/windchill/.profile windchill@hyperthermia:~/ && scp /home/windchill/.profile windchill@frostbite:~/ '
+alias cfprofile='scp /home/windchill/.profile windchill@heatstroke:~/ && scp /home/windchill/.profile windchill@hyperthermia:~/ '
+
+
+#ssh into other servers
+alias sshf='ssh -qX frostbite'
+alias sshh='ssh -qX heatstroke'
+alias sshy='ssh -qX hyperthermia'
