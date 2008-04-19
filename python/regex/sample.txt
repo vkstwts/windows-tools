@@ -1,0 +1,20 @@
+his section covers only the most important issues resp. frequent questions. If you don't find your answer here, please head to the forums.
+Startup Problems
+
+In case andLinux does not fully startup, please check your firewall settings. Many firewalls apply restrictive default permissions to newly created network interfaces, which often results in incoming traffic for the "TAP-Colinux" network adapter being blocked. Please ensure that your firewall does not block traffic on the "TAP-Colinux" interface! Furthermore, the executables Xming.exe and pulseaudio.exe are often blocked by software firewalls.
+
+Note: Even if andLinux does not fully startup, you might be able to login to andLinux using FLTK or NT console for debugging purposes.
+Samba Access
+
+If you're not able to access your Windows files via Samba, please check that you don't have any errors in your username or password (they're stored in /etc/smbpasswd). Furthermore, please verify that file and printer sharing is enabled for the "TAP-Colinux" network adapter and that your firewall does not block file and printer sharing for this network adapter.
+Other Languages / Time Zones
+
+You may install other languages; for example, to install German, execute the command locale-gen de_DE@euro and add a line with LANG=de_DE@euro to /etc/environment. Additionally, it may be necessary to install the language pack: apt-get install language-pack-de. If you're using the KDE version, you may want to install the KDE translation packages furthermore: apt-get install kde-i18n-de koffice-i18n-de kile-i18n-de. Finally, you'll have to reboot to activate your changes. This procedure should also work with other languages than German by replacing "de" and "de_DE@euro" in the commands appropriately.
+
+In order to correct the time zone, link the appropriate file under /usr/share/zoneinfo/ to /etc/localtime, e.g., for Central European Time (CET) you would run: ln -fs /usr/share/zoneinfo/CET /etc/localtime
+Printer Setup
+
+First install some required packages (and their dependencies): apt-get install cupsddk cupsddk-drivers cupsys cupsys-client cupsys-common cupsys-driver-gutenprint foomatic-db foomatic-db-engine foomatic-filters openprinting-ppds openprinting-ppds-extra Next, enable sharing for your Windows printer(s) and ensure that your firewall does not block traffic on the TCP ports 137-139 and 445 on the TAP-Colinux Adapter in either direction (incoming + outgoing). Now, you are ready to connect to your Windows printer(s) via Samba. In the KDE control center (kcontrol), section "Peripherals", subsection "Printers", select CUPS as the "Print system currently used" and then add a printer. In the add-printer-wizard, choose "SMB shared printer", enter your full Windows login and password as option "Normal Account", enter the TAP-Colinux IP (192.168.11.1 by default) as "Server" (don't use the hostname, it can't be properly resolved) and the name of your Windows printer share as "Printer". Finally select the correct printing driver, print a test page, optionally configure the printer's default settings, and complete the wizard.
+Chaning the Launcher Port
+
+In case you want to change the port of the andLinux Launcher (port 81), open the Windows Registry (command regedit), and below the key \\HKEY_LOCAL_MACHINE\SOFTWARE\andLinux\Launcher\ (note that, by default, only the key \\HKEY_LOCAL_MACHINE\SOFTWARE\ exists; you'll have to create the subkeys andLinux and Launcher yourself), create a value "IP" of type "REG_SZ" with the IP address (default 192.168.11.150) and a value "Port" of type "REG_DWORD" (be careful to enter the port as decimal value; default is hexadecimal). Finally, you have to change the value of "LocalPort" in file /usr/local/sbin/launcher.pl (and restart). Note: this feature exists since andLinux Beta 1.
