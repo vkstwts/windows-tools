@@ -1,6 +1,9 @@
+#!/usr/bin/python
+
 import os
 import subprocess as G
 
+dirName = 'win'
 def printInfo():
 	print 'Available space  :'+aspace
 	print 'Used space       :'+uspace
@@ -8,7 +11,8 @@ def printInfo():
 p = G.Popen('df -h', shell=True, stdout=G.PIPE)
 lines = p.stdout.readlines()
 for line in lines:
-	if 'ptc' in line:
+	#print line
+	if dirName  in line:
 		# print line
 		current = line.split()
 		print  'Available Disk space :'+ current[5]+'\t'+current[3]
