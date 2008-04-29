@@ -24,7 +24,9 @@ fi
 #fi 
 export PRINTER=indianajones
 export LPDEST=$PRINTER
-export PATH="/home/prathapy/google/scripts:/usr/lib/ruby/gems/1.8/gems/snippits-0.5.1-/bin:$PATH:/opt/csw/bin"
+export PATH="/home/prathapy/google/scripts:/usr/lib/ruby/gems/1.8/gems/snippits-0.5.1-/bin:$PATH:/opt/csw/bin:/home/prathapy/google/jdeveloper/jdev/bin"
+export  JDEV_HOME="/home/prathapy/google/jdeveloper"
+
 
 # User specific aliases and functions go here (override system defaults)
 
