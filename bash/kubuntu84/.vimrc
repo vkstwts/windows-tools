@@ -7,6 +7,9 @@ au BufReadPost *.rbInfo set syntax=properties
 
 map <F9> :w<CR>:!python %<CR>
 map <F8> :w<CR>:!svn ci %<CR>
+map <F7> :w<CR>:!svn diff %<CR>
+map <F6> :w<CR>:!svn log %<CR>
+
 
 if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
     set fileencodings=utf-8,latin1
