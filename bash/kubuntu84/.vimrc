@@ -9,7 +9,19 @@ map <F9> :w<CR>:!python %<CR>
 map <F8> :w<CR>:!svn ci %<CR>
 map <F7> :w<CR>:!svn diff %<CR>
 map <F6> :w<CR>:!svn log %<CR>
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-_> <C-W>_
+map <C-=> <C-W>=
+"map <C-J> <C-W>j<C-W>_
+"map <C-K> <C-W>k<C-W>_
+set wmh=0
 
+set wmw=0
+nmap <c-h> <c-w>h<c-w>
+nmap <c-l> <c-w>l<c-w>
+"nmap <c-h> <c-w>h<c-w><bar>
+"nmap <c-l> <c-w>l<c-w><bar> 
 
 if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
     set fileencodings=utf-8,latin1
