@@ -5,6 +5,9 @@ set background=dark
 au BufReadPost *.xconf set syntax=xml
 au BufReadPost *.rbInfo set syntax=properties
 
+map <F9> :w<CR>:!python %<CR>
+map <F8> :w<CR>:!svn ci %<CR>
+
 if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
     set fileencodings=utf-8,latin1
 endif
@@ -137,5 +140,4 @@ if has("gui_running")
     imap <C-down> <C-o><C-e>
 endif
 
-map <F9> :w<CR>:!python %<CR>
 
