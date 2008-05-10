@@ -3,7 +3,7 @@
 import os
 import subprocess as G
 
-dirName = '/usr/local/google'
+dirs = ['/usr/local/google','/']
 
 def sendmail(mesg):
     SENDMAIL = "/usr/sbin/sendmail" # sendmail location
@@ -14,19 +14,19 @@ def sendmail(mesg):
     p.write("\n") # blank line separating headers from body
     p.write(mesg)
     sts = p.close()
-    if sts != 0:
+    if sts != None:
         print "Sendmail exit status", sts
 
 
 p = G.Popen('df -h', shell=True, stdout=G.PIPE)
 lines = p.stdout.readlines()
+mesg = 'Disk space Utilization details '
 for line in lines:
-	#print line
-	if dirName  in line:
-		# print line
-		current = line.split()
-                mesg = 'Disk space Utilization details \n'
-		mesg = mesg + 'Path       :'+ current[5]+ '\nUsed space :'+ current[2]+ '\nAvailable  :'+ current[3]
-                sendmail(mesg)
-		break
+    #print line
+    current = line.split()
+    for dir in dirs:
+        if current and len(current)>5 and dir == current[5]:
+            mesg = mesg + '\nPath : '+ current[5]+ '\tUsed space :'+ current[2]+ '\tAvailable  :'+ current[3]
+            break
+sendmail(mesg)
 
