@@ -3,14 +3,14 @@
 import os
 import subprocess as G
 
-dirs = ['/usr/local/google','/']
+dirs = ['/opt/ptc','/vault']
 
 def sendmail(mesg):
     SENDMAIL = "/usr/sbin/sendmail" # sendmail location
     p = os.popen("%s -t" % SENDMAIL, "w")
-    p.write("To: ysprathap@gmail.com\n")
-    p.write("From: ysprathap@gmail.com\n")
-    p.write("Subject: test email\n")
+    p.write("To: prathapy@google.com\n")
+    p.write("From: prathapy@google.com\n")
+    p.write("Subject: Frostbite performance details\n")
     p.write("\n") # blank line separating headers from body
     p.write(mesg)
     sts = p.close()
