@@ -3,10 +3,20 @@
 import os
 import subprocess as G
 
-dirName = 'win'
-def printInfo():
-	print 'Available space  :'+aspace
-	print 'Used space       :'+uspace
+dirName = '/usr/local/google'
+
+def sendmail(mesg):
+    SENDMAIL = "/usr/sbin/sendmail" # sendmail location
+    p = os.popen("%s -t" % SENDMAIL, "w")
+    p.write("To: ysprathap@gmail.com\n")
+    p.write("From: ysprathap@gmail.com\n")
+    p.write("Subject: test email\n")
+    p.write("\n") # blank line separating headers from body
+    p.write(mesg)
+    sts = p.close()
+    if sts != 0:
+        print "Sendmail exit status", sts
+
 
 p = G.Popen('df -h', shell=True, stdout=G.PIPE)
 lines = p.stdout.readlines()
@@ -15,15 +25,8 @@ for line in lines:
 	if dirName  in line:
 		# print line
 		current = line.split()
-		print  'Available Disk space :'+ current[5]+'\t'+current[3]
+                mesg = 'Disk space Utilization details \n'
+		mesg = mesg + 'Path       :'+ current[5]+ '\nUsed space :'+ current[2]+ '\nAvailable  :'+ current[3]
+                sendmail(mesg)
 		break
-p = G.Popen('df -h | grep ptc | head -1 ',shell=True, stdout=G.PIPE)
-lines = p.stdout.readlines()
-for line in lines:
-	current = line.split()
-	aspace = current[3]
-	usapce = current[2]
-	# print 'Available space  :'+current[3]
-	# print 'Used space       :'+current[2]
-printInfo
 
