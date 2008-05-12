@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+# This script finds the disk space utilization details and
+# CPU utilization details from sar output files. 
+# Sends email to the plm-sysadmins group.
+
 import os
 import subprocess as G
 import smtplib
@@ -36,18 +40,17 @@ for line in lines:
 
 #Find Performance details using sar
 p = G.Popen('ls /var/adm/sa/sa[0-9]* | tail -'+str(days)+' | xargs', shell=True, stdout=G.PIPE) 
-lines = p.stdout.readlines()
+line = p.stdout.readline()
 mesg = mesg + '\n\n\nCPU Utilization details\n'
-for line in lines:
-    print line
-    sarFiles = line.split()
-    usr = 0
-    sys = 0
-    wio = 0
-    idle = 0
-    for sarFile in sarFiles: 
-    	cmd = 'sar -f '+sarFile+' | grep Average'
-    	#print cmd
+#print line
+sarFiles = line.split()
+usr = 0
+sys = 0
+wio = 0
+idle = 0
+for sarFile in sarFiles: 
+	cmd = 'sar -f '+sarFile+' | grep Average'
+	#print cmd
     	g=G.Popen(cmd, shell=True, stdout=G.PIPE) 
     	avg= g.stdout.readline()
     	#print avg
@@ -57,10 +60,10 @@ for line in lines:
         wio = wio + int(util[3])
         idle = idle + int(util[4])
 
-mesg = mesg + '\nAverage user utilization : '+str(usr/days)+'%'
-mesg = mesg + '\nAverage system utilization : '+str(sys/days)+'%'
-mesg = mesg + '\nAverage wio utilization : '+str(wio/days)+'%'
-mesg = mesg + '\nAverage idle cpu : '+str(idle/days)+'%'
+mesg = mesg + '\nAverage CPU time in user mode : '+str(usr/days)+'%'
+mesg = mesg + '\nAverage CPU time in system mode : '+str(sys/days)+'%'
+mesg = mesg + '\nAverage CPU time in waiting for I/O mode : '+str(wio/days)+'%'
+mesg = mesg + '\nAverage CPU idle time : '+str(idle/days)+'%'
+#print mesg
 
-print mesg
 sendTextMail(mailTo,mailSubject,mesg)
