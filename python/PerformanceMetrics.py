@@ -2,21 +2,25 @@
 
 import os
 import subprocess as G
+import smtplib
+from email.MIMEText import MIMEText
 
+mailServer="smtp.corp.google.com"
+mailTo="prathapy@google.com"
+mailSubject="PLM system monitoring details"
 dirs = ['/opt/ptc','/vault']
 days = 7 
 
-def sendmail(mesg):
-    SENDMAIL = "/usr/sbin/sendmail" # sendmail location
-    p = os.popen("%s -t" % SENDMAIL, "w")
-    p.write("To: ysprathap@gmail.com\n")
-    p.write("From: windchill@google.com\n")
-    p.write("Subject: Frostbite system monitoring information\n")
-    p.write("\n") # blank line separating headers from body
-    p.write(mesg)
-    sts = p.close()
-    if sts != None:
-        print "Sendmail exit status", sts
+def sendTextMail(to,subject,text):
+    frm = "Windchill <windchill@google.com>"
+    mail = MIMEText(text)
+    mail['From'] = frm
+    mail['Subject'] =subject
+    mail['To'] = to
+    smtp = smtplib.SMTP(mailServer)
+    smtp.sendmail(frm, [to], mail.as_string())
+    smtp.close()
+
 
 #Find Disk Usage details.
 p = G.Popen('df -h', shell=True, stdout=G.PIPE)
@@ -53,10 +57,10 @@ for line in lines:
         wio = wio + int(util[3])
         idle = idle + int(util[4])
 
-mesg = mesg + '\nAverage user utilization : '+str(usr/days)
-mesg = mesg + '\nAverage system utilization : '+str(sys/days)
-mesg = mesg + '\nAverage wio utilization : '+str(wio/days)
-mesg = mesg + '\nAverage idle  : '+str(idle/days)
+mesg = mesg + '\nAverage user utilization : '+str(usr/days)+'%'
+mesg = mesg + '\nAverage system utilization : '+str(sys/days)+'%'
+mesg = mesg + '\nAverage wio utilization : '+str(wio/days)+'%'
+mesg = mesg + '\nAverage idle cpu : '+str(idle/days)+'%'
 
 print mesg
-sendmail(mesg)
+sendTextMail(mailTo,mailSubject,mesg)
