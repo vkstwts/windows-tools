@@ -38,10 +38,35 @@ alias sshha='ssh -qX prathapy@heatstroke.corp.google.com -t screen -r -x all'
 alias sshya='ssh -qX prathapy@hyperthermia.corp.google.com -t screen -r -x all'
 alias sshpa='ssh -qX prathapy@prathapy.mtv.corp.google.com -t screen -r -x all'
 
+#BloomEnergy
+alias sshc='ssh -qX wcadmin@casagrande'
+alias sshm='ssh -qX wcadmin@mesaverde'
+alias sshw='ssh -qX wcadmin@whitesands'
+
+alias lmsite='less  ~/mesa/Windchill/site.xconf'
+alias lcsite='less  ~/casa/Windchill/site.xconf'
+alias lwsite='less  ~/white/Windchill/site.xconf'
+alias lmwt='less  ~/mesa/Windchill/wt.properties'
+alias lcwt='less  ~/casa/Windchill/wt.properties'
+alias lwwt='less  ~/white/Windchill/site.xconf'
+alias lmie='less  ~/mesa/Windchill/codebase/WEB-INF/ie.properties'
+alias lcie='less  ~/casa/Windchill/codebase/WEB-INF/ie.properties'
+alias lwie='less  ~/white/Windchill/codebase/WEB-INF/ie.properties'
+alias lmdb='less  ~/mesa/Windchill/db/db.properties'
+alias lcdb='less  ~/casa/Windchill/db/db.properties'
+alias lwdb='less  ~/white/Windchill/db/db.properties'
+alias lmser='less  ~/mesa/Windchill/codebase/service.properties'
+alias lcser='less  ~/casa/Windchill/codebase/service.properties'
+alias lwser='less  ~/white/Windchill/codebase/service.properties'
+
 #screen commands
 alias sls='screen -ls'
 alias sat='screen -r -x $1'
 
 #prism commands
-alias  notes='xulrunner-1.9 /usr/share/prism/application.ini -webapp gnotes@prism.app &'
+alias notes='xulrunner-1.9 /usr/share/prism/application.ini -webapp gnotes@prism.app &'
 alias code='xulrunner-1.9 /usr/share/prism/application.ini -webapp code@prism.app &'
+alias gmail='/usr/bin/prism-google-mail'
+alias greader='/usr/bin/prism-google-reader'
+alias gcal='/usr/bin/prism-google-calendar'
+alias gtalk='/usr/bin/prism-google-talk'
