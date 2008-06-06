@@ -69,6 +69,11 @@ alias tdms='tail -f `ls -trC1 ~/death/Windchill/logs/MethodServer*.log | tail -1
 alias tcms='tail -f `ls -trC1 ~/casa/Windchill/logs/MethodServer*.log | tail -1`'
 alias twms='tail -f `ls -trC1 ~/white/Windchill/logs/MethodServer*.log | tail -1`'
 
+alias mmesa ='sshfs wcadmin@mesaverde.ionamerica.priv:/cygdrive/c/ptc/ mesa/'
+alias mwhite='sshfs wcadmin@whitesands.ionamerica.priv:/cygdrive/e/ptc/Windchill9/ white/'
+alias mcasa='sshfs wcadmin@casagrande.ionamerica.priv:/cygdrive/e/ptc/Windchill9/ casa/'
+alias mdeath='sshfs wcadmin@deathvalley.ionamerica.priv:/cygdrive/c/ptc/ death/'
+
 #screen commands
 alias sls='screen -ls'
 alias sat='screen -r -x $1'
