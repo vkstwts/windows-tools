@@ -12,9 +12,12 @@ import wt.inf.template.DefaultWTContainerTemplate;
 import wt.inf.container.OrgContainer;
 
 PDMLinkProduct product = PDMLinkProduct.newPDMLinkProduct();
-product.setName("Test Product");
+product.setName("Test Product 1");
+product.setDescription("Test Product 1");
+product.setInvitationMsg("Test Product 1");
+product.setSharingEnabled(false);
 //product.setNumber("12345");
-
+println("Product  2  :"+product);
 className = DefaultWTContainerTemplate.class;
 DefaultWTContainerTemplate productTemplate;
 queryspec = new QuerySpec(className);
@@ -33,7 +36,7 @@ WTPrincipal admin = SessionHelper.manager.getAdministrator();
 println("Current user  :"+ admin.getFullName());
 product.setOwner(admin);
 product.setCreator(admin);
-
+println("Product  1 :"+product);
 className = wt.inf.container.OrgContainer.class;
 int[] index = new int[1];
 index[0] = 0;
@@ -41,7 +44,7 @@ QuerySpec queryspec = new QuerySpec(className);
 queryspec.appendWhere(new SearchCondition(className, "containerInfo.name", "=", "BLOOMENERGY"), index);
 QueryResult queryresult = PersistenceHelper.manager.find(queryspec);
 // WTOrganization bloom ;
-OrgContainer blooml;
+OrgContainer orgContainer;
 if (queryresult.hasMoreElements()) {
    orgContainer = (OrgContainer) queryresult.nextElement();
    println("orgContainer  :"+orgContainer.getName());
@@ -50,8 +53,10 @@ if (queryresult.hasMoreElements()) {
 //orgContainer  = WTContainerHelper.getContainer(bloom);
 //print(orgContainer);
 orgContainerRef = WTContainerRef.newWTContainerRef(orgContainer);
-product  = WTContainerHelper.setContainer(product,orgContainerRef);
-
+println(" orgContainerRef  :"+orgContainerRef);
+println("Product   3:"+product);
+ WTContainerHelper.setContainer(product,orgContainerRef);
+println("Product   :"+product);
 //Create Product
 try {
     WTContainerHelper.service.create(product);
