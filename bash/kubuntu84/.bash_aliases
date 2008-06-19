@@ -75,14 +75,19 @@ alias tdms='tail -f `ls -trC1 ~/death/Windchill/logs/MethodServer*.log | tail -1
 alias tdnms='tail -f `ls -trC1 ~/denali/Windchill/logs/MethodServer*.log | tail -1`'
 alias tcms='tail -f `ls -trC1 ~/casa/Windchill/logs/MethodServer*.log | tail -1`'
 alias twms='tail -f `ls -trC1 ~/white/Windchill/logs/MethodServer*.log | tail -1`'
+alias lmms='less `ls -trC1 ~/mesa/Windchill/logs/MethodServer*.log | tail -1`'
+alias ldms='less `ls -trC1 ~/death/Windchill/logs/MethodServer*.log | tail -1`'
+alias ldnms='less `ls -trC1 ~/denali/Windchill/logs/MethodServer*.log | tail -1`'
+alias lcms='less `ls -trC1 ~/casa/Windchill/logs/MethodServer*.log | tail -1`'
+alias lwms='less `ls -trC1 ~/white/Windchill/logs/MethodServer*.log | tail -1`'
 
 alias mmesa='sshfs wcadmin@mesaverde.ionamerica.priv:/cygdrive/c/ptc/ mesa/'
 alias mwhite='sshfs wcadmin@whitesands.ionamerica.priv:/cygdrive/e/ptc/Windchill9/ white/'
 alias mcasa='sshfs wcadmin@casagrande.ionamerica.priv:/cygdrive/e/ptc/Windchill9/ casa/'
 alias mdeath='sshfs wcadmin@deathvalley.ionamerica.priv:/cygdrive/c/ptc/ death/'
-alias mdenali='sshfs wcadmin@denali.ionamerica.priv:/cygdrive/c/ptc/ denali/'
+alias mdenali='sshfs wcadmin@denali.ionamerica.priv:/cygdrive/e/ptc/ denali/'
 
-alias dusers="tail -f ~/denali/Apache/logs/access.log | awk '$3 !~ /-/ {print substr($4,2) \s $3 }'"
+alias dusers="less ~/denali/Apache/logs/access.log | awk '$3 !~ /-/ {print substr($4,2) \s $3 }'"
 #screen commands
 alias sls='screen -ls'
 alias sat='screen -r -x $1'
