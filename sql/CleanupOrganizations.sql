@@ -1,4 +1,6 @@
+/* Tested in Windchill 8.0 */
 /* Delete domain references first */
+
 select * from wtgroup where ida3domainref in ( select ida2a2 from administrativedomain where CLASSNAMEKEYCONTAINERREFEREN like '%OrgContainer%' and ida3containerreference<>(select ida2a2 from orgcontainer where LOWER(namecontainerinfo) like 'bloom energy'));
 delete from wtgroup where ida3domainref in ( select ida2a2 from administrativedomain where CLASSNAMEKEYCONTAINERREFEREN like '%OrgContainer%' and ida3containerreference<>(select ida2a2 from orgcontainer where LOWER(namecontainerinfo) like 'bloom energy'));
 
