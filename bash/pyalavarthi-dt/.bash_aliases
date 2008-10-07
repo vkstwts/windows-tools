@@ -14,6 +14,7 @@ alias tsm='tail -f `ls -tr  $WINDCHILL9/Windchill/logs/ServerManager*.log | tail
 alias tlogs='tail -f `ls -tr  $WINDCHILL9/Windchill/logs/*Server*.log | tail -6`'
 alias tmlogs='tail -f `ls -trC1  $WINDCHILL9/Windchill/logs/*MethodServer-*.log | tail -2`'
 alias users='~/users.sh'
+alias grepall='~/grepall.sh'
 
 #less commands
 alias laccess='less -MN $WINDCHILL9/Apache/logs/access.log'
