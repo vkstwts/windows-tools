@@ -10,7 +10,7 @@ import  wt.project.Role;
 import wt.session.SessionHelper;
 import wt.org.WTUser;
 
-String name="Trash Library";
+String name="Restricted Library";
 Class className = wt.inf.library.WTLibrary.class;
 int[] index = new int[1];
 index[0] = 0;
@@ -33,12 +33,15 @@ while (queryresult.hasMoreElements()) {
            Object roleobj =enumeration.nextElement();
            Role role = (Role) roleobj;
             System.out.println(role);
+        
             if(role.getDisplay().equalsIgnoreCase("Members")){
                 WTUser user = (WTUser)SessionHelper.manager.getPrincipal();
                 ContainerTeamHelper.service.addMember(team,role,user);
+//                ContainerTeamHelper.service.addGuestMember(team,user);  // to add users to guest role
                 System.out.println( "User "+user.getName() +"  added to role "+role.getDisplay()+" in container "+library.getDisplayIdentifier());
                 
             }
         }
     }
 }
+
