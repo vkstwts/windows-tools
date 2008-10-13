@@ -1,0 +1,3 @@
+#! /bin/bash.exe
+# Convert verbose.txt file to xconf format
+gawk -F= 'BEGIN{print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE NmLoader SYSTEM \"xconf.dtd\">\n <Configuration xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" }; END{print "\n</Configuration>" };{print "\n\t\t<Property name=\""$1"\" overridable=\"true\" \n\t\t targetFile=\"codebase/wt.properties\" \n\t\t value=\""$2"\"/>"}' < verbose.txt > verbose.xconf

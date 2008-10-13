@@ -1,4 +1,6 @@
 import win32com.client
+import time
+
 def WMIDateStringToDate(dtmDate):
     strDateTime = ""
     if (dtmDate[4] == 0):
@@ -13,30 +15,36 @@ def WMIDateStringToDate(dtmDate):
     return strDateTime
 
 strComputer = "."
+#strComputer = "\\hqdvpttmp01"
 objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
 objSWbemServices = objWMIService.ConnectServer(strComputer,"root\cimv2")
 colItems = objSWbemServices.ExecQuery("SELECT * FROM Win32_Process")
 for objItem in colItems:
     print "-----------------------"
-    if objItem.Caption != None:
-        print "Caption:" + ` objItem.Caption`
-    if objItem.CommandLine != None:
-        print "CommandLine:" + ` objItem.CommandLine`
-    if objItem.CreationDate != None:
-        print "CreationDate:" + WMIDateStringToDate(objItem.CreationDate)
-    if objItem.Description != None:
-        print "Description:" + ` objItem.Description`
-    if objItem.ExecutablePath != None:
-        print "ExecutablePath:" + ` objItem.ExecutablePath`
-    if objItem.ExecutionState != None:
-        print "ExecutionState:" + ` objItem.ExecutionState`
-    if objItem.Name != None:
-        print "Name:" + ` objItem.Name`
-    if objItem.ParentProcessId != None:
-        print "ParentProcessId:" + ` objItem.ParentProcessId`
-    if objItem.ProcessId != None:
-        print "ProcessId:" + ` objItem.ProcessId`
-    if objItem.Status != None:
-        print "Status:" + ` objItem.Status`
-    if objItem.TerminationDate != None:
-        print "TerminationDate:" + WMIDateStringToDate(objItem.TerminationDate)
+    commandLine = `objItem.CommandLine`
+    if commandLine.lower().find("apachejmeter")>0:
+        print "Jmeter found"
+        if objItem.Caption != None:
+            print "Caption:" + ` objItem.Caption`
+        if objItem.CommandLine != None:
+            print "CommandLine:" + ` objItem.CommandLine`
+        if objItem.CreationDate != None:
+            print "CreationDate:" + WMIDateStringToDate(objItem.CreationDate)
+        if objItem.Description != None:
+            print "Description:" + ` objItem.Description`
+        if objItem.ExecutablePath != None:
+            print "ExecutablePath:" + ` objItem.ExecutablePath`
+        if objItem.ExecutionState != None:
+            print "ExecutionState:" + ` objItem.ExecutionState`
+        if objItem.Name != None:
+            print "Name:" + ` objItem.Name`
+        if objItem.ParentProcessId != None:
+            print "ParentProcessId:" + ` objItem.ParentProcessId`
+        if objItem.ProcessId != None:
+            print "ProcessId:" + ` objItem.ProcessId`
+        if objItem.Status != None:
+            print "Status:" + ` objItem.Status`
+        if objItem.TerminationDate != None:
+            print "TerminationDate:" + WMIDateStringToDate(objItem.TerminationDate)
+
+time.sleep(25)            

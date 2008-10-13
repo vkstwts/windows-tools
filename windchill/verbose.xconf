@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE NmLoader SYSTEM "xconf.dtd">
+ <Configuration xmlns:xlink="http://www.w3.org/1999/xlink">
+
+
+		<Property name="com.ptc.core.HTMLtemplateutil.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.netmarkets.bookmark.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.netmarkets.notebook.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.netmarkets.notebookfolder.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.enterprise.dataops.server.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.enterprise.search.client.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.ixb.exporter.xls.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.search.task.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.search.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="com.ptc.windchill.upgrade.directives.migrator.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false "/>
+
+		<Property name="wt.access.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.access.verboseEvent" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="true"/>
+
+		<Property name="wt.access.verboseExecution" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.access.verbosePolicy" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.adapter.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.adapter.verboseException" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.adapter.verboseWebject" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.admin.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.auth.verboseClient" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.auth.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.cache.verboseClient" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.cache.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.calendar.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.content.DEBUG" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.content.POLL_DEBUG" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.context.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.doc.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fc.cache.transactionVerbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fc.cache.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.federation.org.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.federation.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fv.master.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fv.master.verboseProperties" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fv.replica.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fv.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.fv.verboseProperties" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.httpgw.verboseClient" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.httpgw.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.index.bulkTool.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="true"/>
+
+		<Property name="wt.index.verboseExecution" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.index.verbosePerformance" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.index.verbosePolicy" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.inf.container.internalGroupsMigrator.verboseExecution" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.inf.container.migrateProjectsWithApostrophe.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.ixb.archive.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.ixb.debug.enable" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="true"/>
+
+		<Property name="wt.ixb.handlers.debug" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="true"/>
+
+		<Property name="wt.ixb.netmarkets.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.ixb.util.debug" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.lifecycle.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.mail.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.manager.rmi.verboseSocket" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.manager.rmi.verboseSocketIO" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.manager.verboseClient" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.manager.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.meeting.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.method.rmi.verboseSocket" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.method.rmi.verboseSocketIO" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.method.verboseClient" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.method.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.notify.verboseExecution" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.notify.verbosePolicy" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.org.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.projmgmt.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.properties.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.queue.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.replication.sender.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.replication.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.representation.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.router.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.scheduler.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.services.applicationcontext.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.services.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.services.verboseEvents" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.step.verboseServer" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.sysadm.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.team.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.template.cache.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.viewmarkup.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.collaboration.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.definer.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.engine.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.forum.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.notebook.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+		<Property name="wt.workflow.verbose" overridable="true" 
+		 targetFile="codebase/wt.properties" 
+		 value="false"/>
+
+</Configuration>
