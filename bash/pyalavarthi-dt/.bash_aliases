@@ -15,6 +15,7 @@ alias tlogs='tail -f `ls -tr  $WINDCHILL9/Windchill/logs/*Server*.log | tail -6`
 alias tmlogs='tail -f `ls -trC1  $WINDCHILL9/Windchill/logs/*MethodServer-*.log | tail -2`'
 alias users='~/users.sh'
 alias grepall='~/grepall.sh'
+alias gtoday='grep $(date +%d/%b/%Y)'
 
 #less commands
 alias laccess='less -MN $WINDCHILL9/Apache/logs/access.log'
@@ -97,7 +98,7 @@ alias lll='ls -ltr | less -MN'
 
 #map windchill9 directory to servers
 alias win='echo $WINDCHILL9'
-alias links='ln -s /cygdrive/t/ptc/Windchill_9.0 ~/training; ln -s /cygdrive/v/ptc/Windchill_9.0 ~/dev1; ln -s /cygdrive/w/ptc/Windchill_9.0 ~/dev2;ln -s /cygdrive/q/ptc/Windchill_9.0 ~/qa1; ln -s /cygdrive/r/ptc/Windchill_9.0 ~/qa2;  ln -s /cygdrive/x/ptc/Windchill_9.0 ~/staging;  ln -s /cygdrive/y/ptc/Windchill_9.0 ~/slave1; ln -s /cygdrive/z/ptc/Windchill_9.0 ~/slave2'
+alias links='ln -s /cygdrive/t/ptc/Windchill_9.0 ~/training; ln -s /cygdrive/v/ptc/Windchill_9.0 ~/dev1; ln -s /cygdrive/w/ptc/Windchill_9.0 ~/dev2;ln -s /cygdrive/q/ptc/Windchill_9.0 ~/qa1; ln -s /cygdrive/r/ptc/Windchill_9.0 ~/qa2;  ln -s /cygdrive/x/ptc/Windchill_9.0 ~/staging;  ln -s /cygdrive/y/ptc/Windchill_9.0 ~/slave1; ln -s /cygdrive/z/ptc/Windchill_9.0 ~/slave2;  ln -s /cygdrive/s/ptc/Windchill_9.0 ~/slave3'
 alias training='export WINDCHILL9=~/training;export CDPATH=~/training:~/training/Windchill; cd ~/training'
 alias dev1='export WINDCHILL9=~/dev1;export CDPATH=~/dev1:~/dev1/Windchill; cd ~/dev1'
 alias dev2='export WINDCHILL9=~/dev2;export CDPATH=~/dev2:~/dev2/Windchill; cd ~/dev2'
@@ -106,3 +107,4 @@ alias qa2='export WINDCHILL9=~/qa2;export CDPATH=~/qa2:~/qa2/Windchill; cd ~/qa2
 alias staging='export WINDCHILL9=~/staging;export CDPATH=~/staging:~/staging/Windchill; cd ~/staging'
 alias slave1='export WINDCHILL9=~/slave1;export CDPATH=~/slave1:~/slave1/Windchill; cd ~/slave1'
 alias slave2='export WINDCHILL9=~/slave2;export CDPATH=~/slave2:~/slave2/Windchill; cd ~/slave2'
+alias slave3='export WINDCHILL9=~/slave3;export CDPATH=~/slave3:~/slave2/Windchill; cd ~/slave3'
