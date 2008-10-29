@@ -63,11 +63,13 @@ alias gie='cat $WINDCHILL9/Windchill/codebase/WEB-INF/ie.properties | grep -in $
 alias gdb='cat $WINDCHILL9/Windchill/db/db.properties | grep -in $1'
 alias gsite='cat $WINDCHILL9/Windchill/site.xconf | grep -inC2 $1'
 #alias glogs='ls -trC1  $WINDCHILL9/Windchill/logs/*Server*.log | tail -4 | xargs | cat | grep -in $1'
-alias glogs='cat `logs` | grep -in $1'
+#alias glogs='cat `logs` | grep -in $1'
 alias gmlogs='cat `mlogs` | grep -in $1'
 alias gapache='cat $WINDCHILL9/Apache/conf/extra/app*conf | grep -in $1'
 alias gaccess='cat $WINDCHILL9/Apache/logs/access.log | grep -in $1'
 alias gerror='cat $WINDCHILL9/Apache/logs/error.log | grep -in $1'
+alias glogs='tail --lines=1000 `sm` `win` `error` `cat` `ms1` `ms` | grep -A3 -i Exception | less -MN +G'
+#alias glogs='tail --lines=1000 `sm` `win` `error` `cat` `ms1` `ms` | grep -A3 -i "Exception\|Error" | less -MN +G'
 
 #view property files in notepad
 alias nwt='pushd $WINDCHILL9 && notepad "Windchill/codebase/wt.properties" &'
@@ -94,8 +96,6 @@ alias lhttpd='less -iMN $WINDCHILL9/Apache/conf/httpd.conf'
 alias vap='pushd $WINDCHILL9/Apache/conf/extra && vim -p app-Windchill* '
 alias vcog='pushd $WINDCHILL9/Apache/conf/extra && vim -p app-cognos*'
 alias vhttpd='vim $WINDCHILL9/Apache/conf/httpd.conf'
-
-
 
 #ls aliases
 alias ll='ls -ltr'
