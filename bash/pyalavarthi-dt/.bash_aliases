@@ -18,16 +18,16 @@ alias grepall='~/grepall.sh'
 alias gtoday='grep $(date +%d/%b/%Y)'
 
 #less commands
-alias laccess='less -MN $WINDCHILL9/Apache/logs/access.log'
-alias lerror='less -MN $WINDCHILL9/Apache/logs/error.log'
-alias lcat='less -MN $WINDCHILL9/Tomcat/logs/PTCTomcat-stdout.log'
-alias lwin='less -MN $WINDCHILL9/Tomcat/logs/windchill.log'
-alias lms='less -MN `ls -tr  $WINDCHILL9/Windchill/logs/MethodServer-*.log | tail -1`'
-alias lms1='less -MN `ls -tr  $WINDCHILL9/Windchill/logs/MethodServer-*.log | tail -2`'
-alias lbms='less -MN `ls -tr  $WINDCHILL9/Windchill/logs/BackgroundMethodServer-*.log | tail -1`'
-alias lsm='less -MN `ls -tr  $WINDCHILL9/Windchill/logs/ServerManager*.log | tail -1`'
-alias llogs='less -MN `ls -tr  $WINDCHILL9/Windchill/logs/*Server*.log | tail -6`'
-alias lmlogs='less -MN `ls -tr   $WINDCHILL9/Windchill/logs/*MethodServer-*.log | tail -2`'
+alias laccess='less -iMN +G $WINDCHILL9/Apache/logs/access.log'
+alias lerror='less -iMN +G $WINDCHILL9/Apache/logs/error.log'
+alias lcat='less -iMN +G $WINDCHILL9/Tomcat/logs/PTCTomcat-stdout.log'
+alias lwin='less -iMN +G $WINDCHILL9/Tomcat/logs/windchill.log'
+alias lms='less -iMN +G `ls -tr  $WINDCHILL9/Windchill/logs/MethodServer-*.log | tail -1`'
+alias lms1='less -iMN +G `ls -tr  $WINDCHILL9/Windchill/logs/MethodServer-*.log | tail -2`'
+alias lbms='less -iMN +G `ls -tr  $WINDCHILL9/Windchill/logs/BackgroundMethodServer-*.log | tail -1`'
+alias lsm='less -iMN +G `ls -tr  $WINDCHILL9/Windchill/logs/ServerManager*.log | tail -1`'
+alias llogs='less -iMN +G `ls -tr  $WINDCHILL9/Windchill/logs/*Server*.log | tail -6`'
+alias lmlogs='less -iMN +G `ls -tr   $WINDCHILL9/Windchill/logs/*MethodServer-*.log | tail -2`'
 
 #list commands
 alias ms='ls -trC1  $WINDCHILL9/Windchill/logs/MethodServer-*.log | tail -1'
@@ -37,6 +37,12 @@ alias bms='ls -trC1  $WINDCHILL9/Windchill/logs/BackgroundMethodServer-*.log | t
 alias sm='ls -tr  $WINDCHILL9/Windchill/logs/ServerManager*.log | tail -1'
 alias logs='ls -trC1  $WINDCHILL9/Windchill/logs/*Server*.log | tail -10'
 alias mlogs='ls -trC1  $WINDCHILL9/Windchill/logs/*MethodServer-*.log | tail -10'
+alias access='ls -trC1 $WINDCHILL9/Apache/logs/access.log'
+alias error='ls -trC1 $WINDCHILL9/Apache/logs/error.log'
+alias cat='ls -trC1 $WINDCHILL9/Tomcat/logs/PTCTomcat-stdout.log'
+alias win='ls -trC1 $WINDCHILL9/Tomcat/logs/windchill.log'
+alias lall='less -iMN ++G `ms` `sm` `cat` `error`'  
+#alias lall='less -iMN ++G `ms` `ms1` `sm` `cat` `win` `error` `access`'
 
 #windchill directories
 alias cdw='cd $WINDCHILL9/Windchill/'
@@ -72,39 +78,44 @@ alias ndb='pushd $WINDCHILL9 && notepad "Windchill/db/db.properties" &'
 alias nsite='pushd $WINDCHILL9 && notepad "Windchill/site.xconf" &'
 
 #view property files in less
-alias lwt='less -MN $WINDCHILL9/Windchill/codebase/wt.properties'
-alias lservice='less -MN $WINDCHILL9/Windchill/codebase/service.properties'
-alias lie='less -MN $WINDCHILL9/Windchill/codebase/WEB-INF/ie.properties'
-alias lweb='less -MN $WINDCHILL9/Windchill/codebase/WEB-INF/web.xml'
-alias ldb='less -MN $WINDCHILL9/Windchill/db/db.properties'
-alias lsite='less -MN $WINDCHILL9/Windchill/site.xconf'
+alias lwt='less -iMN $WINDCHILL9/Windchill/codebase/wt.properties'
+alias lservice='less -iMN $WINDCHILL9/Windchill/codebase/service.properties'
+alias lie='less -iMN $WINDCHILL9/Windchill/codebase/WEB-INF/ie.properties'
+alias lweb='less -iMN $WINDCHILL9/Windchill/codebase/WEB-INF/web.xml'
+alias ldb='less -iMN $WINDCHILL9/Windchill/db/db.properties'
+alias lsite='less -iMN $WINDCHILL9/Windchill/site.xconf'
 
 
 #view apache files in less
-alias lap='pushd $WINDCHILL9/Apache/conf/extra && less -MN app-Windchill* '
-alias lcog='pushd $WINDCHILL9/Apache/conf/extra && less -MN app-cognos*'
-alias lhttpd='less -MN $WINDCHILL9/Apache/conf/httpd.conf'
+alias lap='pushd $WINDCHILL9/Apache/conf/extra && less -iMN app-Windchill* '
+alias lcog='pushd $WINDCHILL9/Apache/conf/extra && less -iMN app-cognos*'
+alias lhttpd='less -iMN $WINDCHILL9/Apache/conf/httpd.conf'
 
 alias vap='pushd $WINDCHILL9/Apache/conf/extra && vim -p app-Windchill* '
 alias vcog='pushd $WINDCHILL9/Apache/conf/extra && vim -p app-cognos*'
 alias vhttpd='vim $WINDCHILL9/Apache/conf/httpd.conf'
 
 
+
 #ls aliases
 alias ll='ls -ltr'
 alias la='ls -Al'
 alias l='ls -CF'
-alias lll='ls -ltr | less -MN'
+alias lll='ls -ltr | less -iMN'
+
+#screen commands
+alias sls='screen -ls'
+alias sat='screen -r -x $1'
 
 #map windchill9 directory to servers
-alias win='echo $WINDCHILL9'
-alias links='ln -s /cygdrive/t/ptc/Windchill_9.0 ~/training; ln -s /cygdrive/v/ptc/Windchill_9.0 ~/dev1; ln -s /cygdrive/w/ptc/Windchill_9.0 ~/dev2;ln -s /cygdrive/q/ptc/Windchill_9.0 ~/qa1; ln -s /cygdrive/r/ptc/Windchill_9.0 ~/qa2;  ln -s /cygdrive/x/ptc/Windchill_9.0 ~/staging;  ln -s /cygdrive/y/ptc/Windchill_9.0 ~/slave1; ln -s /cygdrive/z/ptc/Windchill_9.0 ~/slave2;  ln -s /cygdrive/s/ptc/Windchill_9.0 ~/slave3'
-alias training='export WINDCHILL9=~/training;export CDPATH=~/training:~/training/Windchill; cd ~/training'
-alias dev1='export WINDCHILL9=~/dev1;export CDPATH=~/dev1:~/dev1/Windchill; cd ~/dev1'
-alias dev2='export WINDCHILL9=~/dev2;export CDPATH=~/dev2:~/dev2/Windchill; cd ~/dev2'
-alias qa1='export WINDCHILL9=~/qa1;export CDPATH=~/qa1:~/qa1/Windchill; cd ~/qa1'
-alias qa2='export WINDCHILL9=~/qa2;export CDPATH=~/qa2:~/qa2/Windchill; cd ~/qa2'
-alias staging='export WINDCHILL9=~/staging;export CDPATH=~/staging:~/staging/Windchill; cd ~/staging'
-alias slave1='export WINDCHILL9=~/slave1;export CDPATH=~/slave1:~/slave1/Windchill; cd ~/slave1'
-alias slave2='export WINDCHILL9=~/slave2;export CDPATH=~/slave2:~/slave2/Windchill; cd ~/slave2'
-alias slave3='export WINDCHILL9=~/slave3;export CDPATH=~/slave3:~/slave2/Windchill; cd ~/slave3'
+alias wind='echo $WINDCHILL9'
+alias links='ln -s /cygdrive/t/ptc/Windchill_9.0 ~/training; ln -s /cygdrive/v/ptc/Windchill_9.0 ~/dev1; ln -s /cygdrive/u/ptc/Windchill_9.0 ~/dev2;ln -s /cygdrive/q/ptc/Windchill_9.0 ~/qa1; ln -s /cygdrive/r/ptc/Windchill_9.0 ~/qa2;  ln -s /cygdrive/w/ptc/Windchill_9.0 ~/staging;  ln -s /cygdrive/x/ptc/Windchill_9.0 ~/slave1; ln -s /cygdrive/y/ptc/Windchill_9.0 ~/slave2;  ln -s /cygdrive/z/ptc/Windchill_9.0 ~/slave3'
+alias training='export WINDCHILL9=~/training;export CDPATH=.:~/training:~/training/Windchill; cd ~/training'
+alias dev1='export WINDCHILL9=~/dev1;export CDPATH=.:~/dev1:~/dev1/Windchill; cd ~/dev1'
+alias dev2='export WINDCHILL9=~/dev2;export CDPATH=.:~/dev2:~/dev2/Windchill; cd ~/dev2'
+alias qa1='export WINDCHILL9=~/qa1;export CDPATH=.:~/qa1:~/qa1/Windchill; cd ~/qa1'
+alias qa2='export WINDCHILL9=~/qa2;export CDPATH=.:~/qa2:~/qa2/Windchill; cd ~/qa2'
+alias staging='export WINDCHILL9=~/staging;export CDPATH=.:~/staging:~/staging/Windchill; cd ~/staging'
+alias slave1='export WINDCHILL9=~/slave1;export CDPATH=.:~/slave1:~/slave1/Windchill; cd ~/slave1'
+alias slave2='export WINDCHILL9=~/slave2;export CDPATH=.:~/slave2:~/slave2/Windchill; cd ~/slave2'
+alias slave3='export WINDCHILL9=~/slave3;export CDPATH=.:~/slave3:~/slave2/Windchill; cd ~/slave3'

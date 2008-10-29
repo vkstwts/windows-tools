@@ -68,8 +68,10 @@
 # export HISTIGNORE="[   ]*:&:bg:fg:exit"
 
 # Whenever displaying the prompt, write the previous line to disk
-# export PROMPT_COMMAND="history -a"
+export PROMPT_COMMAND="history -a"
 
+#export LESS="-Dn9.1$-Ds4.1"
+export LESS="-iMN"
 
 # Aliases
 # #######
@@ -111,11 +113,9 @@
 
 # Set PATH so it includes user's private bin if it exists
  # if [ -d "${HOME}/bin" ] ; then
-  export PATH=$PATH:/cygdrive/c/Dev/UnxUtils/usr/local/wbin/:/cygdrive/c/Dev/Cygwin/bin	
+export PATH=$PATH:/cygdrive/c/Dev/Cygwin/bin:/cygdrive/c/Dev/UnxUtils/usr/local/wbin/
  #fi
 
 if [ -f ~/.bash_aliases ]; then
 	    . ~/.bash_aliases
 fi
-
-
