@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="yes"?>
+
+<%@taglib uri="http://www.ptc.com/infoengine/taglib/core" prefix="ie"%>
+
+
+<ie:webject name="Query-Objects" type="OBJ">
+   <ie:param name="instance"     data="com.nvidia.Ldap"/>
+    <ie:param name="base"       data="ou=people,cn=Windchill_8.0,cn=Application Services,o=nvidia"/>
+   <ie:param name="attribute" data="uid"/>
+   <ie:param name="attribute" data="userPassword"/>
+   <ie:param name="attribute" data="cn"/>
+   <ie:param name="attribute" data="mail"/>
+   <ie:param name="attribute" data="objectClass"/>
+   <ie:param name="group_out"  data="onelevel"/>
+   <ie:param name="dbuser" data="cn=Manager"/>
+   <ie:param name="passwd" data="ldapadmin"/>
+   <ie:param name="scope" data="onelevel"/>
+   <ie:param name="filter" data="objectClass=inetOrgPerson"/>
+   
+</ie:webject>
+
+<ie:forEach groupIn="onelevel" groupOut="userData">
+<% 	
+	String userName="dummy";
+	try {
+	userName = getGroup("userData").getAttributeValue(0, "uid").toString();
+	System.out.println("UserName  --- > "+ userName);
+	if(!userName.equals("Administrator"))
+	{
+	System.out.println("Unlocking UserName  --- > "+ userName);	
+	%>
+	<ie:webject name="Update-Object" type="ACT">
+	   <ie:param name="instance"     data="com.nvidia.Ldap"/>
+	   <ie:param name="object"       data="$(userData[]object[])"/> 
+	   <!ie:param name="object"       data="uid=aattaluri,ou=people,cn=Windchill_8.0,cn=Application Services,o=nvidia"/>
+	   <ie:param name="modification" data="delete"/>
+	   <ie:param name="field" data="pwdAccountLockedTime;pwd-userPassword"/>
+	   <ie:param name="group_out"  data="updated-dir-entry"/>
+	   <ie:param name="dbuser" data="cn=Manager"/>
+	   <ie:param name="passwd" data="ldapadmin"/>
+	</ie:webject>
+	<% 
+	} else {
+		System.out.println("Skipping UserName  --- > "+ userName);
+	}
+	
+	} catch (Exception e) {
+		System.out.println("Exception Unlocking UserName  --- > "+ userName);
+	}
+%>
+</ie:forEach>
+	
+<ie:webject name="Return-Groups" type="GRP">
+  <ie:param name="GROUP_IN" data="*"/>
+</ie:webject>
