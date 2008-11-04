@@ -4,18 +4,24 @@ import sys
 
 #Define Global Variables
 cmd='psexec'
-drive='E:'
-win9=drive+'\\ptc\\Windchill_9.0'
+ddrive='D:'
+edrive='E:'
+win9=edrive+'\\ptc\\Windchill_9.0'
 wind=win9+'\\Windchill'
 unix=win9+'\\UnxUtils\\usr\\local\\wbin\\'
+
 version=wind+'\\bin\\windchill.exe version'
 xconf=wind+'\\bin\\xconfmanager.bat -p'
 touch=unix+'touch.exe '+wind+'\\site.xconf'
-property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /i'
+property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /i'
+
+statusFile='C:\\Dev\\bin\\windStatus.bat'
+stageserversFile='C:\\Dev\\bin\\stagingServers.txt'
+prodserversFile='C:\\Dev\\bin\\prodServers.txt'
 
 servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
 stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
-prodservers = ['\\\\hqnvptas01','\\\\hqnvptas03','\\\\hqnvptas04','\\\\hqnvptas05','\\\\hqnvptas06']
+prodservers = ['\\\\hqnvptas01','\\\\hqnvptws03','\\\\hqnvptws04','\\\\hqnvptws05','\\\\hqnvptws06']
 allservers = servers + stageservers + prodservers
 server = '\\\hqdvpttmp01'
 
@@ -49,6 +55,17 @@ def findProperty1(servers,searchString):
     for server in servers:
         findProperty(server,searchString)
          
+def findStatus(server):
+    statuscmd=cmd+" "+server+" -c "+statusFile
+    print "Running on Server :"+server
+    print "statuscmd :"+statuscmd
+    os.system(statuscmd)
+
+def findStatus1(serversFile):
+    statuscmd=cmd+" @"+serversFile+" -c "+statusFile
+    print "Running on Server :"+server
+    os.system(statuscmd)
+
 def updateCommands(fromDrive, toDrive):
     global version
     global xconf
@@ -84,13 +101,15 @@ def printServers():
 PROPOGATE_XCONF = 1
 FIND_VERSION    = 2
 FIND_PROPERTY   = 3
-CHANGE_SERVER   = 4
-EXIT_ACTIONS    = 5
+FIND_STATUS     = 4
+CHANGE_SERVER   = 5
+EXIT_ACTIONS    = 6
 def printActions():
     print "Select the Action:"
     print str(PROPOGATE_XCONF)+".Propogate Xconf"
     print str(FIND_VERSION)+".Find Version"
     print str(FIND_PROPERTY)+".Find Property"
+    print str(FIND_STATUS)+".Find Status"
     print str(CHANGE_SERVER)+".Change Server"
     print str(EXIT_ACTIONS)+".Exit"
         
@@ -115,10 +134,10 @@ while True:
                 propogateXconf1(allservers)
                 continue
             elif serverOption==DEV:
-                updateCommands("E:","D:")
+                updateCommands(edrive,ddrive)
                 server = servers[serverOption-1]
                 propogateXconf(server)
-                updateCommands("D:","E:")
+                updateCommands(ddrive,edrive)
                 continue
             server = servers[serverOption-1]
             propogateXconf(server)
@@ -159,6 +178,24 @@ while True:
                 continue
             server = servers[serverOption-1]
             findProperty(server,searchString)
+        elif action==FIND_STATUS:
+            if serverOption==STAGING:
+                findStatus1(stageserversFile)
+                continue
+            elif serverOption==PRODUCTION:
+                findStatus1(prodserversFile)
+                continue
+            elif serverOption==ALL:
+                findStatus1(allservers)
+                continue
+            elif serverOption==DEV:
+                updateCommands("E:","D:")
+                server = servers[serverOption-1]
+                findStatus(server)
+                updateCommands("D:","E:")
+                continue
+            server = servers[serverOption-1]
+            findStatus(server)
         elif action==CHANGE_SERVER:
             break    
 
