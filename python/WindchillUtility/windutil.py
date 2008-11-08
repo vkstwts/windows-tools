@@ -15,12 +15,15 @@ class Dispatcher:
     version=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe version'
     xconf=wind+'\\bin\\xconfmanager.bat -p'
     touch=unix+'touch.exe '+wind+'\\site.xconf'
-    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /i'
+    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /iN /A:74'
+    #property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | '+unix+'grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
 
-    statusFile='windStatus.bat'
-    stageserversFile='stagingServers.txt'
-    prodserversFile='prodServers.txt'
+    statusFile='.\\windStatus.bat'
+    stopFile='.\\windStop.bat'
+    startFile='.\\windStart.bat'
+    stageserversFile='.\\stagingServers.txt'
+    prodserversFile='.\\prodServers.txt'
 
     servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
@@ -33,18 +36,8 @@ class Dispatcher:
         self.runCommand(touchcmd)
         self.runCommand(fullcmd)
 
-    def propogateXconf1(self,serversFile):
-        touchcmd=self.cmd+" @"+serversFile+" "+self.touch
-        fullcmd=self.cmd+" @"+serversFile+" "+self.xconf
-        self.runCommand(touchcmd)
-        self.runCommand(fullcmd)
-
     def findVersion(self,server):
         versioncmd=self.cmd+" "+server+" "+self.version
-        self.runCommand(versioncmd)
-
-    def findVersion1(self,serversFile):
-        versioncmd=self.cmd+" @"+serversFile+" "+self.version
         self.runCommand(versioncmd)
 
     def findProperty(self,server):
@@ -52,27 +45,22 @@ class Dispatcher:
         propertycmd=self.cmd+" "+server+" "+self.property+" "+searchString
         self.runCommand(propertycmd)
 
-    def findProperty1(self,serversFile):
-        searchString = raw_input("Enter Search String :")
-        propertycmd=self.cmd+" @"+serversFile+" "+self.property+" "+searchString
-        self.runCommand(propertycmd)
-          
     def findServicesStatus(self,server):
         statuscmd=self.cmd+" "+server+" -c "+self.statusFile
         self.runCommand(statuscmd)
 
-    def findServicesStatus1(self,serversFile):
-        statuscmd=self.cmd+" @"+serversFile+" -c "+self.statusFile
-        self.runCommand(statuscmd)
+    def stopServices(self,server):
+        stopcmd=self.cmd+" "+server+" -c "+self.stopFile
+        self.runCommand(stopcmd)
+
+    def startServices(self,server):
+        startcmd=self.cmd+" "+server+" -c "+self.startFile
+        self.runCommand(startcmd)
 
     def findWindchillStatus(self,server):
         winstatuscmd=self.cmd+" "+server+" "+self.winstatus
         self.runCommand(winstatuscmd)
 
-    def findWindchillStatus1(self,serversFile):
-        winstatuscmd=self.cmd+" @"+serversFile+" "+self.winstatus
-        self.runCommand(winstatuscmd)
-     
     def updateCommands(self,fromDrive, toDrive):
         self.version = self.version.replace(fromDrive,toDrive)
         self.xconf = self.xconf.replace(fromDrive,toDrive)
@@ -86,20 +74,19 @@ class Dispatcher:
         print "Return code :" + str(retcode)
      
     def error(self):
-        print 'Error'
+        print 'No Such Method Error'
 
     def dispatch(self, command):
         mname = command
         if hasattr(self, mname):
             method = getattr(self, mname)
-            method1 = getattr(self,mname+"1")
             if serverOption==serversList.index('Staging')+1:
-                method1(self.stageserversFile)
+                method("@"+self.stageserversFile)
             elif serverOption==serversList.index('Production')+1:
-                method1(self.prodserversFile)
-            elif serverOption==serversList.index('All'):
-                method1(self.allservers)
-            elif serverOption==serversList.index('Dev'):
+                method("@"+self.prodserversFile)
+            elif serverOption==serversList.index('All')+1:
+                method(self.allservers)
+            elif serverOption==serversList.index('Dev')+1:
                 self.updateCommands("E:","D:")
                 server = self.servers[serverOption-1]
                 method(server)
@@ -116,17 +103,19 @@ commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Find Version','findVersion'],
                 ['Find Property','findProperty'],
                 ['Find Services Status','findServicesStatus'],
+                ['Stop Services ','stopServices'],
+                ['Start Services ','startServices'],
                 ['Find Windchill Status','findWindchillStatus'],
                 ['Change Server','changeServer'],
                 ['Exit','Exit'] ]
 
 def printServerOptions():
-    print "\n\n Select the server:"
+    print "\n\n Select a server:"
     for index, item in enumerate(serversList):
         print index+1, item
 
 def printActions():
-    print "\n\n Select the Action:"
+    print "\n Select an action:"
     for index, item in enumerate(commandsList):
         print index+1, item[0]
         
@@ -136,7 +125,7 @@ while True:
     if serverOption==len(serversList):
         break
     while True:
-        print 'Selected Server :'+str(serverOption)
+        print '\n\n Selected Server :'+serversList[serverOption-1]
         printActions()
         action = int(raw_input())
         if action==len(commandsList):
