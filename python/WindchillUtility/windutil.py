@@ -4,7 +4,7 @@ import sys
 import subprocess as G
 
 class Dispatcher:
-    #Define Global Variables
+    
     cmd='psexec'
     ddrive='D:'
     edrive='E:'
@@ -18,9 +18,9 @@ class Dispatcher:
     property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /i'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
 
-    statusFile='C:\\Dev\\bin\\windStatus.bat'
-    stageserversFile='C:\\Dev\\bin\\stagingServers.txt'
-    prodserversFile='C:\\Dev\\bin\\prodServers.txt'
+    statusFile='windStatus.bat'
+    stageserversFile='stagingServers.txt'
+    prodserversFile='prodServers.txt'
 
     servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
@@ -57,11 +57,11 @@ class Dispatcher:
         propertycmd=self.cmd+" @"+serversFile+" "+self.property+" "+searchString
         self.runCommand(propertycmd)
           
-    def findStatus(self,server):
+    def findServicesStatus(self,server):
         statuscmd=self.cmd+" "+server+" -c "+self.statusFile
         self.runCommand(statuscmd)
 
-    def findStatus1(self,serversFile):
+    def findServicesStatus1(self,serversFile):
         statuscmd=self.cmd+" @"+serversFile+" -c "+self.statusFile
         self.runCommand(statuscmd)
 
@@ -84,11 +84,7 @@ class Dispatcher:
         print 'Command :'+ command
         retcode = G.call(command,shell=True)
         print "Return code :" + str(retcode)
-    ##    p = G.Popen(command, shell=True, stdout=G.PIPE)
-    ##    lines = p.stdout.readlines()
-    ##    for line in lines:
-    ##        print line
-    
+     
     def error(self):
         print 'Error'
 
@@ -97,13 +93,13 @@ class Dispatcher:
         if hasattr(self, mname):
             method = getattr(self, mname)
             method1 = getattr(self,mname+"1")
-            if serverOption==STAGING:
+            if serverOption==serversList.index('Staging')+1:
                 method1(self.stageserversFile)
-            elif serverOption==PRODUCTION:
+            elif serverOption==serversList.index('Production')+1:
                 method1(self.prodserversFile)
-            elif serverOption==ALL:
+            elif serverOption==serversList.index('All'):
                 method1(self.allservers)
-            elif serverOption==DEV:
+            elif serverOption==serversList.index('Dev'):
                 self.updateCommands("E:","D:")
                 server = self.servers[serverOption-1]
                 method(server)
@@ -113,65 +109,40 @@ class Dispatcher:
                 method(server)            
         else:
             self.error()
+
             
+serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All','Exit'] 
+commandsList = [ ['Propogate Xconf','propogateXconf'],
+                ['Find Version','findVersion'],
+                ['Find Property','findProperty'],
+                ['Find Services Status','findServicesStatus'],
+                ['Find Windchill Status','findWindchillStatus'],
+                ['Change Server','changeServer'],
+                ['Exit','Exit'] ]
 
-DEV = 1
-QA1 = 2
-QA2 = 3
-TRAINING = 4
-STAGING  = 5
-PRODUCTION = 6
-ALL = 7
-EXIT = 8
-def printServers():
+def printServerOptions():
     print "\n\n Select the server:"
-    print str(DEV)+".Dev"
-    print str(QA1)+".QA1"
-    print str(QA2)+".QA2"
-    print str(TRAINING)+".Training"
-    print str(STAGING)+".Stage"
-    print str(PRODUCTION)+".Production"
-    print str(ALL)+".All"
-    print str(EXIT)+".Exit"
+    for index, item in enumerate(serversList):
+        print index+1, item
 
-PROPOGATE_XCONF = 1
-FIND_VERSION    = 2
-FIND_PROPERTY   = 3
-FIND_SERVICES_STATUS     = 4
-FIND_WINDCHILL_STATUS = 5
-CHANGE_SERVER   = 6
-EXIT_ACTIONS    = 7
 def printActions():
     print "\n\n Select the Action:"
-    print str(PROPOGATE_XCONF)+".Propogate Xconf"
-    print str(FIND_VERSION)+".Find Version"
-    print str(FIND_PROPERTY)+".Find Property"
-    print str(FIND_SERVICES_STATUS)+".Find Services Status"
-    print str(FIND_WINDCHILL_STATUS)+".Find Windchill Status"
-    print str(CHANGE_SERVER)+".Change Server"
-    print str(EXIT_ACTIONS)+".Exit"
+    for index, item in enumerate(commandsList):
+        print index+1, item[0]
         
 while True:
-    printServers()
+    printServerOptions()
     serverOption = int(raw_input())
-    if serverOption==EXIT:
+    if serverOption==len(serversList):
         break
     while True:
         print 'Selected Server :'+str(serverOption)
         printActions()
         action = int(raw_input())
-        d = Dispatcher()
-        if action==EXIT_ACTIONS:
+        if action==len(commandsList):
             sys.exit()
-        elif action==PROPOGATE_XCONF:
-            d.dispatch('propogateXconf')
-        elif action==FIND_VERSION:
-            d.dispatch('findVersion')
-        elif action==FIND_PROPERTY:
-            d.dispatch('findProperty')
-        elif action==FIND_SERVICES_STATUS:
-            d.dispatch('findStatus')
-        elif action==FIND_WINDCHILL_STATUS:
-            d.dispatch('findWindchillStatus')
-        elif action==CHANGE_SERVER:
-            break    
+        elif action==len(commandsList)-1:
+            break;
+        else:
+            d = Dispatcher()
+            d.dispatch(commandsList[action-1][1])
