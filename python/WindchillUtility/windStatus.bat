@@ -8,3 +8,5 @@ echo Windchill
 sc query  ptcwindchill | findstr /i "state "
 echo Partslink
 sc query  Partslink | findstr /i "state "
+echo Cognos
+sc query  "Cognos 8" | findstr /i "state "
