@@ -1,0 +1,1 @@
+ls.exe -tr E:\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -2 | xargs.exe tail.exe 

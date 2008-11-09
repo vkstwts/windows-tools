@@ -15,19 +15,25 @@ class Dispatcher:
     version=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe version'
     xconf=wind+'\\bin\\xconfmanager.bat -p'
     touch=unix+'touch.exe '+wind+'\\site.xconf'
-    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /iN /A:74'
-    #property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | '+unix+'grep.exe -in'
+    #property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /iN /A:74'
+    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
-
+    tailtomcat=unix+'tail.exe  '+win9+'\\Tomcat\\logs\\PTCTomcat-stdout.log'
+    tailapache=unix+'tail.exe  '+win9+'\\Apache\\logs\\error.log'
+    lesswt=unix+'less.exe -iMN '+wind+'\\codebase\\wt.properties'
+    lessdb=unix+'less.exe -iMN '+wind+'\\db\\db.properties'
+    
     statusFile='.\\windStatus.bat'
     stopFile='.\\windStop.bat'
     startFile='.\\windStart.bat'
     stageserversFile='.\\stagingServers.txt'
     prodserversFile='.\\prodServers.txt'
-
-    servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
+    tailmsFile='.\\tailms.bat'
+    
+    servers = ['\\\\hqdvpttmp01','\\\\hqstptas01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
     prodservers = ['\\\\hqnvptas01','\\\\hqnvptws03','\\\\hqnvptws04','\\\\hqnvptws05','\\\\hqnvptws06']
+
     allservers = servers + stageservers + prodservers
 
     def propogateXconf(self,server):
@@ -61,12 +67,36 @@ class Dispatcher:
         winstatuscmd=self.cmd+" "+server+" "+self.winstatus
         self.runCommand(winstatuscmd)
 
-    def updateCommands(self,fromDrive, toDrive):
+    def tailMethodServerLogs(self,server):
+        tailmscmd=self.cmd+" "+server+" -c "+self.tailmsFile
+        self.runCommand(tailmscmd)
+
+    def tailTomcatLog(self,server):
+        tailtomcatcmd=self.cmd+" "+server+" "+self.tailtomcat
+        self.runCommand(tailtomcatcmd)
+
+    def tailApacheLog(self,server):
+        tailapachecmd=self.cmd+" "+server+" "+self.tailapache
+        self.runCommand(tailapachecmd)
+
+    def lessWT(self,server):
+        lesswtcmd=self.cmd+" "+server+" "+self.lesswt
+        self.runCommand(lesswtcmd)
+
+    def lessDB(self,server):
+        lessdbcmd=self.cmd+" "+server+" "+self.lessdb
+        self.runCommand(lessdbcmd)
+
+    def changeDriveLetter(self,fromDrive, toDrive):
         self.version = self.version.replace(fromDrive,toDrive)
         self.xconf = self.xconf.replace(fromDrive,toDrive)
         self.touch = self.touch.replace(fromDrive,toDrive)
         self.property = self.property.replace(fromDrive,toDrive)
         self.winstatus = self.winstatus.replace(fromDrive,toDrive)
+        self.tailtomcat = self.tailtomcat.replace(fromDrive,toDrive)
+        self.tailapache = self.tailapache.replace(fromDrive,toDrive)
+        self.lesswt = self.lesswt.replace(fromDrive,toDrive)
+        self.lessdb = self.lessdb.replace(fromDrive,toDrive)
         
     def runCommand(self,command):
         print 'Command :'+ command
@@ -87,10 +117,10 @@ class Dispatcher:
             elif serverOption==serversList.index('All')+1:
                 method(self.allservers)
             elif serverOption==serversList.index('Dev')+1:
-                self.updateCommands("E:","D:")
+                self.changeDriveLetter("E:","D:")
                 server = self.servers[serverOption-1]
                 method(server)
-                self.updateCommands("D:","E:")
+                self.changeDriveLetter("D:","E:")
             else:
                 server = self.servers[serverOption-1]
                 method(server)            
@@ -98,39 +128,45 @@ class Dispatcher:
             self.error()
 
             
-serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All','Exit'] 
+serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All'] 
 commandsList = [ ['Propogate Xconf','propogateXconf'],
-                ['Find Version','findVersion'],
                 ['Find Property','findProperty'],
+                ['Tail MethodServer logs','tailMethodServerLogs'],
+                ['Tail Tomcat log','tailTomcatLog'],
+                ['Tail Apache Error log','tailApacheLog'],
+                ['View wt.properties','lessWT'],
+                ['View db.properties','lessDB'],
                 ['Find Services Status','findServicesStatus'],
                 ['Stop Services ','stopServices'],
                 ['Start Services ','startServices'],
+                ['Find Windchill Version','findVersion'],
                 ['Find Windchill Status','findWindchillStatus'],
-                ['Change Server','changeServer'],
-                ['Exit','Exit'] ]
+                ['Change Server','changeServer']]
 
 def printServerOptions():
     print "\n\n Select a server:"
     for index, item in enumerate(serversList):
         print index+1, item
-
+    print "\n Enter 0 to exit"
+    
 def printActions():
     print "\n Select an action:"
     for index, item in enumerate(commandsList):
         print index+1, item[0]
-        
+    print "\n Enter 0  to exit"
+    
 while True:
     printServerOptions()
     serverOption = int(raw_input())
-    if serverOption==len(serversList):
+    if serverOption==0:
         break
     while True:
         print '\n\n Selected Server :'+serversList[serverOption-1]
         printActions()
         action = int(raw_input())
-        if action==len(commandsList):
+        if action==0:
             sys.exit()
-        elif action==len(commandsList)-1:
+        elif action==len(commandsList):
             break;
         else:
             d = Dispatcher()
