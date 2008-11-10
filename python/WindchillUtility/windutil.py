@@ -115,7 +115,13 @@ class Dispatcher:
             elif serverOption==serversList.index('Production')+1:
                 method("@"+self.prodserversFile)
             elif serverOption==serversList.index('All')+1:
-                method(self.allservers)
+                for index, server in enumerate(self.allservers):
+                    if(index ==0):
+                        self.changeDriveLetter("E:","D:")
+                        method(server)
+                        self.changeDriveLetter("D:","E:")
+                    else :
+                        method(server)
             elif serverOption==serversList.index('Dev')+1:
                 self.changeDriveLetter("E:","D:")
                 server = self.servers[serverOption-1]
@@ -130,7 +136,7 @@ class Dispatcher:
             
 serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All'] 
 commandsList = [ ['Propogate Xconf','propogateXconf'],
-                ['Find Property','findProperty'],
+                ['Search Property files','findProperty'],
                 ['Tail MethodServer logs','tailMethodServerLogs'],
                 ['Tail Tomcat log','tailTomcatLog'],
                 ['Tail Apache Error log','tailApacheLog'],
