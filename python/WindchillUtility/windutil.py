@@ -2,6 +2,8 @@ import os
 import time
 import sys
 import subprocess as G
+import urllib2
+from urllib2 import URLError
 
 class Dispatcher:
     
@@ -22,6 +24,10 @@ class Dispatcher:
     tailapache=unix+'tail.exe  '+win9+'\\Apache\\logs\\error.log'
     lesswt=unix+'less.exe -iMN '+wind+'\\codebase\\wt.properties'
     lessdb=unix+'less.exe -iMN '+wind+'\\db\\db.properties'
+    sysinfo='systeminfo | grep -i -e "OS" -e "memory" -e "processor"'
+    glogs='ls.exe -tr '+wind+'\\logs\\MethodServer-* | tail.exe -2 | xargs.exe grep.exe -in -A4 '
+    echourl='/Windchill/servlet/WindchillGW/wt.httpgw.HTTPServer/echo'
+    protocol='http://'
     
     statusFile='.\\windStatus.bat'
     stopFile='.\\windStop.bat'
@@ -30,7 +36,7 @@ class Dispatcher:
     prodserversFile='.\\prodServers.txt'
     tailmsFile='.\\tailms.bat'
     
-    servers = ['\\\\hqdvpttmp01','\\\\hqstptas01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
+    servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
     prodservers = ['\\\\hqnvptas01','\\\\hqnvptws03','\\\\hqnvptws04','\\\\hqnvptws05','\\\\hqnvptws06']
 
@@ -87,6 +93,37 @@ class Dispatcher:
         lessdbcmd=self.cmd+" "+server+" "+self.lessdb
         self.runCommand(lessdbcmd)
 
+    def findSystemInfo(self,server):
+        sysinfocmd=self.cmd+" "+server+" "+self.sysinfo
+        self.runCommand(sysinfocmd)
+
+    def searchMSLogs(self,server):
+        searchString = raw_input("Enter Search String :")
+        glogscmd=self.cmd+" "+server+" \'"+self.glogs+"\' "+searchString
+        self.runCommand(glogscmd)
+
+    def pingServer(self,server):
+		if serverOption==serversList.index('Staging')+1:
+			self.protocol='https://'
+			for node in self.stageservers:
+				self.pingNode(node)
+		elif serverOption==serversList.index('Production')+1:
+			self.protocol='https://'
+			for node in self.prodservers:
+				self.pingNode(node)
+		else:
+			self.protocol='http://'
+			self.pingNode(server)
+
+    def pingNode(self,server):
+		echourlString =self.protocol+server[2:]+self.echourl
+		print echourlString
+		try:
+			f=urllib2.urlopen(echourlString)
+			print f.read(200)
+		except URLError, e:
+			print e.reason
+		
     def changeDriveLetter(self,fromDrive, toDrive):
         self.version = self.version.replace(fromDrive,toDrive)
         self.xconf = self.xconf.replace(fromDrive,toDrive)
@@ -137,6 +174,8 @@ class Dispatcher:
 serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All'] 
 commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Search Property files','findProperty'],
+                ['Search Log files','searchMSLogs'],
+                ['Ping server','pingServer'],
                 ['Tail MethodServer logs','tailMethodServerLogs'],
                 ['Tail Tomcat log','tailTomcatLog'],
                 ['Tail Apache Error log','tailApacheLog'],
@@ -147,6 +186,7 @@ commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Start Services ','startServices'],
                 ['Find Windchill Version','findVersion'],
                 ['Find Windchill Status','findWindchillStatus'],
+                ['Find System Info','findSystemInfo'],
                 ['Change Server','changeServer']]
 
 def printServerOptions():
