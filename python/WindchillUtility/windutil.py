@@ -18,7 +18,7 @@ class Dispatcher:
     xconf=wind+'\\bin\\xconfmanager.bat -p'
     touch=unix+'touch.exe '+wind+'\\site.xconf'
     #property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /iN /A:74'
-    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | grep.exe -in'
+    property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\codebase\\com\\ptc\\windchill\\esi\\esi.properties '+wind+'\\db\\db.properties | grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
     tailtomcat=unix+'tail.exe  '+win9+'\\Tomcat\\logs\\PTCTomcat-stdout.log'
     tailapache=unix+'tail.exe  '+win9+'\\Apache\\logs\\error.log'
@@ -28,6 +28,7 @@ class Dispatcher:
     glogs='ls.exe -tr '+wind+'\\logs\\MethodServer-* | tail.exe -2 | xargs.exe grep.exe -in -A4 '
     echourl='/Windchill/servlet/WindchillGW/wt.httpgw.HTTPServer/echo'
     protocol='http://'
+    domain='nvidia.com'
     
     statusFile='.\\windStatus.bat'
     stopFile='.\\windStop.bat'
@@ -116,7 +117,7 @@ class Dispatcher:
 			self.pingNode(server)
 
     def pingNode(self,server):
-		echourlString =self.protocol+server[2:]+self.echourl
+		echourlString =self.protocol+server[2:]+'.'+self.domain+self.echourl
 		print echourlString
 		try:
 			f=urllib2.urlopen(echourlString)

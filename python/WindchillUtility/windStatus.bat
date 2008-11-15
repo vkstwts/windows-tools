@@ -10,3 +10,7 @@ echo Partslink
 sc query  Partslink | findstr /i "state "
 echo Cognos
 sc query  "Cognos 8" | findstr /i "state "
+echo Aphelion
+sc query "Aphelion Services" | findstr /i "state
+echo Fast
+sc query "Fast Stream" | findstr /i "state
