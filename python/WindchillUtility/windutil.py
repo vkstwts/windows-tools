@@ -3,9 +3,7 @@ import time
 import sys
 import subprocess as G
 import urllib2
-from urllib2 import URLError
 import httplib
-from httplib import HTTPException
 
 
 class Dispatcher:
@@ -20,7 +18,6 @@ class Dispatcher:
     version=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe version'
     xconf=wind+'\\bin\\xconfmanager.bat -p'
     touch=unix+'touch.exe '+wind+'\\site.xconf'
-    #property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\db\\db.properties | findstr /iN /A:74'
     property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\codebase\\com\\ptc\\windchill\\esi\\esi.properties '+wind+'\\db\\db.properties | grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
     tailtomcat=unix+'tail.exe  '+win9+'\\Tomcat\\logs\\PTCTomcat-stdout.log'
@@ -40,11 +37,11 @@ class Dispatcher:
     prodserversFile='.\\prodServers.txt'
     tailmsFile='.\\tailms.bat'
     
-    servers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
+    monoservers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
     prodservers = ['\\\\hqnvptas01','\\\\hqnvptws03','\\\\hqnvptws04','\\\\hqnvptws05','\\\\hqnvptws06']
 
-    allservers = servers + stageservers + prodservers
+    allservers = monoservers + stageservers + prodservers
 
     def propogateXconf(self,server):
         touchcmd=self.cmd+" "+server+" "+self.touch
@@ -156,15 +153,36 @@ class Dispatcher:
      
     def error(self):
         print 'No Such Method Error'
-
+        
+    def printNodes(self,servers):
+        print "\n\n Select a Node:"
+        for index, item in enumerate(servers):
+            print index+1, item[2:]
+            if(index == len(servers)-1):
+                print index+2, 'All'
+        print "\n Enter 0 to exit"	
+        
+    def dispatchCluster(self,method,servers,serversFile):
+        self.printNodes(servers)
+        nodeOption = int(raw_input())
+        print 'Node :'+ str(nodeOption)
+        if nodeOption==0:
+            sys.exit()
+        elif nodeOption==len(servers)+1:
+            print 'Calling all nodes'
+            method("@"+serversFile)
+        else:
+            server = servers[nodeOption-1]
+            method(server)   
+            
     def dispatch(self, command):
         mname = command
         if hasattr(self, mname):
             method = getattr(self, mname)
             if serverOption==serversList.index('Staging')+1:
-                method("@"+self.stageserversFile)
+                self.dispatchCluster(method,self.stageservers,self.stageserversFile)
             elif serverOption==serversList.index('Production')+1:
-                method("@"+self.prodserversFile)
+                self.dispatchCluster(method,self.prodservers,self.prodserversFile)
             elif serverOption==serversList.index('All')+1:
                 for index, server in enumerate(self.allservers):
                     if(index ==0):
@@ -175,11 +193,11 @@ class Dispatcher:
                         method(server)
             elif serverOption==serversList.index('Dev')+1:
                 self.changeDriveLetter("E:","D:")
-                server = self.servers[serverOption-1]
+                server = self.monoservers[serverOption-1]
                 method(server)
                 self.changeDriveLetter("D:","E:")
             else:
-                server = self.servers[serverOption-1]
+                server = self.monoservers[serverOption-1]
                 method(server)            
         else:
             self.error()
