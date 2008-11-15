@@ -4,6 +4,9 @@ import sys
 import subprocess as G
 import urllib2
 from urllib2 import URLError
+import httplib
+from httplib import HTTPException
+
 
 class Dispatcher:
     
@@ -104,27 +107,37 @@ class Dispatcher:
         self.runCommand(glogscmd)
 
     def pingServer(self,server):
-		if serverOption==serversList.index('Staging')+1:
-			self.protocol='https://'
-			for node in self.stageservers:
-				self.pingNode(node)
-		elif serverOption==serversList.index('Production')+1:
-			self.protocol='https://'
-			for node in self.prodservers:
-				self.pingNode(node)
-		else:
-			self.protocol='http://'
-			self.pingNode(server)
+        if serverOption==serversList.index('Staging')+1:
+            self.protocol='https://'
+            for node in self.stageservers:
+                self.pingNode(node)
+        elif serverOption==serversList.index('Production')+1:
+            self.protocol='https://'
+            for node in self.prodservers:
+                self.pingNode(node)
+        else:
+            self.protocol='http://'
+            self.pingNode(server)
 
     def pingNode(self,server):
-		echourlString =self.protocol+server[2:]+'.'+self.domain+self.echourl
-		print echourlString
-		try:
-			f=urllib2.urlopen(echourlString)
-			print f.read(200)
-		except URLError, e:
-			print e.reason
-		
+        echourlString =server[2:]+'.'+self.domain
+        print echourlString
+        try:
+            conn = httplib.HTTPConnection(echourlString,80)
+            print self.echourl
+            conn.request("GET", self.echourl)
+            r1 = conn.getresponse()
+            print r1.status, r1.reason
+        except Exception, e:
+            if hasattr(e, 'reason'):
+                print 'We failed to reach a server.'
+                print 'Reason: ', e.reason
+            elif hasattr(e, 'code'):
+                print 'The server couldn\'t fulfill the request.'
+                print 'Error code: ', e.code
+            else:
+                print 'Exception occured'+str(e)
+            
     def changeDriveLetter(self,fromDrive, toDrive):
         self.version = self.version.replace(fromDrive,toDrive)
         self.xconf = self.xconf.replace(fromDrive,toDrive)
