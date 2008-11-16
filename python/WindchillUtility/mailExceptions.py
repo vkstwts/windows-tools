@@ -9,9 +9,13 @@ import subprocess as G
 import smtplib
 from email.MIMEText import MIMEText
 import datetime
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+
 
 mailServer="mailgw.nvidia.com"
-mailTo=['npamidi@nvidia.com','pyalavarthi@nvidia.com','rajasekaran.p@itcinfotech.com']
+mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
+#mailTo=['pyalavarthi@nvidia.com']
 mailSubject="Exceptions in Windchill MethodServer logs on "
 dirs = ['/opt/ptc','/vault']
 days = 7 
@@ -26,27 +30,31 @@ def sendTextMail(to,subject,text):
     smtp.sendmail(frm, [to], mail.as_string())
     smtp.close()
 
-commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -1  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws03\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -2  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws04\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -2  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws05\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -2  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -2  | xargs grep -A5 -in Exception']
 
-mesg = ' '
+commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -5  | xargs grep -A5 -in Exception',
+                'ls.exe -tr \\\\hqnvptws03\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
+                'ls.exe -tr \\\\hqnvptws04\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
+                'ls.exe -tr \\\\hqnvptws05\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
+                'ls.exe -tr \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception']
+
+mesg = MIMEMultipart()
 today =datetime.date.today()
 todayStr = datetime.date.strftime(today,"%m/%d/%y")
 mailSubject =  mailSubject+todayStr
-for command in commandsList:
-	p = G.Popen(command, shell=True, stdout=G.PIPE)
-	lines = p.stdout.readlines()
-	for line in lines:
-		if(line.find(todayStr)>0):
-			mesg = mesg+line
-# toaddrs=mailTo.split(",")
-# print toaddrs
-# mailTo=",".join(toaddrs)
-# print mailTo
-#print mesg
+filename="C:\Temp\WindchillMethodServerExceptions_"+todayStr.replace("/","_")+".txt"
+f = open(filename,'w')
+try:
+	for command in commandsList:
+		p = G.Popen(command, shell=True, stdout=G.PIPE)
+		lines = p.stdout.readlines()
+		for line in lines:
+			if(line.find(todayStr)>0):
+				# mesg = mesg+line
+				f.write(line)
+finally:
+    f.close()
+f = open(filename,'r')
+mesg.attach(MIMEText(f.read()))
 for toaddr in mailTo:
-	sendTextMail(toaddr,mailSubject,mesg)
+	sendTextMail(toaddr,mailSubject,mesg.as_string())
 
