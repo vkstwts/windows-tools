@@ -1,24 +1,17 @@
 #!/usr/bin/python
 
-# This script finds the disk space utilization details and
-# CPU utilization details from sar output files. 
-# Sends email to the plm-sysadmins group.
-
 import os
 import subprocess as G
 import smtplib
-from email.MIMEText import MIMEText
 import datetime
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
 
 mailServer="mailgw.nvidia.com"
-mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
-#mailTo=['pyalavarthi@nvidia.com']
+#mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
+mailTo=['pyalavarthi@nvidia.com']
 mailSubject="Exceptions in Windchill MethodServer logs on "
-dirs = ['/opt/ptc','/vault']
-days = 7 
 
 def sendTextMail(to,subject,text):
     frm = "Windchill <pyalavarthi@nvidia.com>"
@@ -53,6 +46,7 @@ try:
 				f.write(line)
 finally:
     f.close()
+#filename="C:\Temp\WindchillMethodServerExceptions_11_16_08.txt"
 f = open(filename,'r')
 mesg.attach(MIMEText(f.read()))
 for toaddr in mailTo:

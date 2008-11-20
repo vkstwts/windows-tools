@@ -16,5 +16,3 @@ sc query PTCWindchill | findstr /i "state
 sc query Partslink | findstr /i "state
 sc query "Cognos 8" | findstr /i "state
 sc query "Fast Stream" | findstr /i "state
-pause
-
