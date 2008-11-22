@@ -24,17 +24,17 @@ def sendTextMail(to,subject,text):
     smtp.close()
 
 
-commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -5  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws03\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws04\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws05\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception',
-                'ls.exe -tr \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -A5 -in Exception']
+commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -5  | xargs grep -in Exception',
+                'ls.exe -tr \\\\hqnvptws03\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -in Exception',
+                'ls.exe -tr \\\\hqnvptws04\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -in Exception',
+                'ls.exe -tr \\\\hqnvptws05\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -in Exception',
+                'ls.exe -tr \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -in Exception']
 
 mesg = MIMEMultipart()
 today =datetime.date.today()
 todayStr = datetime.date.strftime(today,"%m/%d/%y")
 mailSubject =  mailSubject+todayStr
-filename="C:\Temp\WindchillMethodServerExceptions_"+todayStr.replace("/","_")+".txt"
+filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerExceptions_"+todayStr.replace("/","_")+".txt"
 f = open(filename,'w')
 try:
 	for command in commandsList:
@@ -42,11 +42,10 @@ try:
 		lines = p.stdout.readlines()
 		for line in lines:
 			if(line.find(todayStr)>0):
-				# mesg = mesg+line
 				f.write(line)
 finally:
     f.close()
-#filename="C:\Temp\WindchillMethodServerExceptions_11_16_08.txt"
+	
 f = open(filename,'r')
 mesg.attach(MIMEText(f.read()))
 for toaddr in mailTo:
