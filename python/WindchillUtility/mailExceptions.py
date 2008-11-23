@@ -9,8 +9,8 @@ from email.MIMEText import MIMEText
 
 
 mailServer="mailgw.nvidia.com"
-#mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
-mailTo=['pyalavarthi@nvidia.com']
+mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
+#mailTo=['pyalavarthi@nvidia.com']
 mailSubject="Exceptions in Windchill MethodServer logs on "
 
 def sendTextMail(to,subject,text):

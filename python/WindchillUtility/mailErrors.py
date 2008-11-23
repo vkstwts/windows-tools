@@ -9,9 +9,9 @@ from email.MIMEText import MIMEText
 
 
 mailServer="mailgw.nvidia.com"
-#mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
-mailTo=['pyalavarthi@nvidia.com']
-mailSubject="Errors in Windchill MethodServer logs on "
+mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','rajasekaran.p@itcinfotech.com','ysprathap@gmail.com']
+#mailTo=['pyalavarthi@nvidia.com']
+mailSubject="Urgent!!!  Errors found in Windchill MethodServer logs on "
 
 def sendTextMail(to,subject,text):
     frm = "Windchill <pyalavarthi@nvidia.com>"
@@ -33,7 +33,7 @@ commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\
 mesg = MIMEMultipart()
 today =datetime.datetime.today()
 todayStr = datetime.date.strftime(today,"%m/%d/%y %H")
-print todayStr
+#print todayStr
 mailSubject =  mailSubject+todayStr
 filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerErrors_"+todayStr.replace("/","_")+".txt"
 f = open(filename,'w')
@@ -49,10 +49,23 @@ try:
 finally:
     f.close()
 
+preambleText='Windchill MethodServer logs are searched for the following error messages and found atleast one of them in the last 15 min.\n\n'
+
+errorsfilename="errors.txt"
+errorsFile = open(errorsfilename,'r')
+try:
+	for line in errorsFile:
+		preambleText=preambleText+line
+finally:
+    f.close()
+
+mesg.preamble=preambleText
+mesg.epilogue='\nEnd of log Messages\n'
+
+#foundErrors=1
 if foundErrors==1:
 	f = open(filename,'r')
 	mesg.attach(MIMEText(f.read()))
-	print mesg
+	#print mesg
 	for toaddr in mailTo:
 		sendTextMail(toaddr,mailSubject,mesg.as_string())
-
