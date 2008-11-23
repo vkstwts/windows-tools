@@ -32,8 +32,14 @@ commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\
 
 mesg = MIMEMultipart()
 today =datetime.datetime.today()
-todayStr = datetime.date.strftime(today,"%m/%d/%y %H")
+todayStr = datetime.date.strftime(today,"%m/%d/%y %H:")
+
 #print todayStr
+currentMin = datetime.date.strftime(today,"%M")
+#print currentMin
+startMin = int(currentMin)-14 
+#print startMin
+
 mailSubject =  mailSubject+todayStr
 filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerErrors_"+todayStr.replace("/","_")+".txt"
 f = open(filename,'w')
@@ -43,9 +49,16 @@ try:
 		p = G.Popen(command, shell=True, stdout=G.PIPE)
 		lines = p.stdout.readlines()
 		for line in lines:
-			if(line.find(todayStr)>0):
-				foundErrors=1
-				f.write(line)
+			while startMin <=int(currentMin):
+				if startMin < 10:
+					searchTimeStr = todayStr+'0'+str(startMin)
+				else:
+					searchTimeStr =  todayStr+str(startMin)
+				startMin +=1
+				#print searchTimeStr
+				if(line.find(searchTimeStr)>0):
+					foundErrors=1
+					f.write(line)
 finally:
     f.close()
 
