@@ -1,12 +1,10 @@
 #!/usr/bin/python
-
 import os
 import subprocess as G
 import smtplib
 import datetime
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
-
 
 mailServer="mailgw.nvidia.com"
 mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','mnomura@nvidia.com','rajasekaran.p@itcinfotech.com']
@@ -22,7 +20,6 @@ def sendTextMail(to,subject,text):
     smtp = smtplib.SMTP(mailServer)
     smtp.sendmail(frm, [to], mail.as_string())
     smtp.close()
-
 
 commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -5  | xargs grep -in Exception',
                 'ls.exe -tr \\\\hqnvptws03\\E$\\ptc\\Windchill_9.0\\Windchill\\logs\\MethodServer-* | tail.exe -10  | xargs grep -in Exception',
@@ -45,7 +42,12 @@ try:
 				f.write(line)
 finally:
     f.close()
-	
+
+preambleText='Windchill MethodServer logs are searched for all Exceptions. \n\n'
+preambleText="You can find the attached log messages in the following file.\n"+filename
+mesg.preamble=preambleText
+mesg.epilogue='\nEnd of log Messages\n'
+
 f = open(filename,'r')
 mesg.attach(MIMEText(f.read()))
 for toaddr in mailTo:

@@ -40,8 +40,7 @@ currentMin = datetime.date.strftime(today,"%M")
 startMin = int(currentMin)-14 
 #print startMin
 
-mailSubject =  mailSubject+todayStr
-filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerErrors_"+todayStr.replace("/","_")+".txt"
+filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerErrors_"+todayStr.replace("/","_").replace(" ","__").replace(":","_")+currentMin+".txt"
 f = open(filename,'w')
 foundErrors=0
 try:
@@ -62,6 +61,7 @@ try:
 finally:
     f.close()
 
+mailSubject =  mailSubject+searchTimeStr
 preambleText='Windchill MethodServer logs are searched for the following error messages and found atleast one of them in the last 15 min.\n\n'
 
 errorsfilename="errors.txt"
@@ -72,6 +72,7 @@ try:
 finally:
     f.close()
 
+preambleText=preambleText+"\n You can find the attached log messages in the following file.\n"+filename
 mesg.preamble=preambleText
 mesg.epilogue='\nEnd of log Messages\n'
 
@@ -82,3 +83,6 @@ if foundErrors==1:
 	#print mesg
 	for toaddr in mailTo:
 		sendTextMail(toaddr,mailSubject,mesg.as_string())
+else:
+	# print filename
+	os.remove(filename)
