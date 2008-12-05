@@ -29,7 +29,8 @@ commandsList = [ 'ls.exe -tr \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Windchill\\
 
 mesg = MIMEMultipart()
 today =datetime.date.today()
-todayStr = datetime.date.strftime(today,"%m/%d/%y")
+#todayStr = datetime.date.strftime(today,"%m/%d/%y")
+todayStr = str(today.month)+"/"+str(today.day)+"/"+str(today.year)[2:]
 mailSubject =  mailSubject+todayStr
 filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerExceptions_"+todayStr.replace("/","_")+".txt"
 f = open(filename,'w')
@@ -39,7 +40,9 @@ try:
 		lines = p.stdout.readlines()
 		for line in lines:
 			if(line.find(todayStr)>0):
+				#print line
 				f.write(line)
+				
 finally:
     f.close()
 
