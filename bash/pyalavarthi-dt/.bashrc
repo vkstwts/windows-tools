@@ -30,7 +30,7 @@
 # shopt -s nocaseglob
 
 # Make bash append rather than overwrite the history on disk
-# shopt -s histappend
+shopt -s histappend
 
 # When changing directory small typos can be ignored by bash
 # for example, cd /vr/lgo/apaache would find /var/log/apache
@@ -118,4 +118,8 @@ export PATH=$PATH:/cygdrive/c/Dev/Cygwin/bin:/cygdrive/c/Dev/UnxUtils/usr/local/
 
 if [ -f ~/.bash_aliases ]; then
 	    . ~/.bash_aliases
+fi
+
+if [ -f ~/.sfbashrc ]; then
+	    . ~/.sfbashrc
 fi
