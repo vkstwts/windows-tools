@@ -12,7 +12,7 @@ from email.MIMEText import MIMEText
 mailServer="mailgw.nvidia.com"
 #mailTo=['pyalavarthi@nvidia.com','npamidi@nvidia.com','rajasekaran.p@itcinfotech.com','ysprathap@gmail.com']
 mailTo=['pyalavarthi@nvidia.com']
-mailSubject="Urgent!!!  Errors found in Windchill MethodServer logs on "
+mailSubject="Urgent!!!  Errors found in Windchill MethodServer or Tomcat logs on "
 
 def sendTextMail(to,subject,text):
     frm = "Windchill <pyalavarthi@nvidia.com>"
@@ -37,6 +37,11 @@ tomcatCommandsList = ['grep -n -ferrors.txt  \\\\hqnvptas01\\E$\\ptc\\Windchill_
 					  'grep -n -ferrors.txt  \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Tomcat\\logs\\PTCTomcat-stdout.log',
 					  'grep -n -ferrors.txt  \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Tomcat\\logs\\windchill.log']
 
+apacheCommandsList = [ 'tail -1000  \\\\hqnvptas01\\E$\\ptc\\Windchill_9.0\\Apache\\logs\\access.log | gawk "$3!~/-/ && $12>9999999"',
+                'tail -5000  \\\\hqnvptws05\\E$\\ptc\\Windchill_9.0\\Apache\\logs\\access.log | gawk "$3!~/-/ && $12>9999999"',
+                'tail -5000  \\\\hqnvptws06\\E$\\ptc\\Windchill_9.0\\Apache\\logs\\access.log | gawk "$3!~/-/ && $12>9999999"']
+
+
 mesg = MIMEMultipart()
 today =datetime.datetime.today()
 #todayStr = datetime.date.strftime(today,"%m/%d/%y %H:")
@@ -44,11 +49,7 @@ todayStr = str(today.month)+"/"+str(today.day)+"/"+str(today.year)[2:]+" "+datet
 
 tomcatTodayStr = datetime.date.strftime(today,"%Y-%m-%d %H:")
 
-#print todayStr
 currentMin = datetime.date.strftime(today,"%M")
-#print currentMin
-startMin = int(currentMin)-14 
-#print startMin
 
 filename="\\\\hqdvpttmp01\\ExceptionsInProductionlogs\\WindchillMethodServerErrors_"+todayStr.replace("/","_").replace(" ","__").replace(":","_")+currentMin+".txt"
 print filename
@@ -69,14 +70,32 @@ try:
 					searchTimeStr =  todayStr+str(startMin)
 					tomcatSearchTimeStr =  tomcatTodayStr+str(startMin)
 				startMin +=1
-				#print searchTimeStr
-				#print tomcatSearchTimeStr
-				#searchTimeStr = '2008-12-02 09:'
-				#print line
 				if((line.find(searchTimeStr)>0) or (line.find(tomcatSearchTimeStr)>0)):
 					print line
 					foundErrors=1
 					f.write(line)
+	foundErrors=1
+	if foundErrors==1:
+		f.write('\n')
+		f.write('\n Time Consuming Requests from Apache logs in the last 15 min\n')
+		for command in apacheCommandsList:
+			startIndex=command.find('hqnvpt')
+			f.write('\n From server '+command[startIndex:startIndex+10]+'\n')			
+			p = G.Popen(command, shell=True, stdout=G.PIPE)
+			lines = p.stdout.readlines()
+			for line in lines:
+				startMin = int(currentMin)-14 
+				while startMin <=int(currentMin):
+					if startMin < 10:
+						tomcatSearchTimeStr = tomcatTodayStr+'0'+str(startMin)
+					else:
+						tomcatSearchTimeStr =  tomcatTodayStr+str(startMin)
+					startMin +=1
+					if((line.find(tomcatSearchTimeStr)>0)):
+						print line
+						foundErrors=1
+						f.write(line)
+		
 finally:
     f.close()
 print todayStr
@@ -98,11 +117,9 @@ preambleText=preambleText+"\n You can find the attached log messages in the foll
 mesg.preamble=preambleText
 mesg.epilogue='\nEnd of log Messages\n'
 
-#foundErrors=1
 if foundErrors==1:
 	f = open(filename,'r')
 	mesg.attach(MIMEText(f.read()))
-	#print mesg
 	for toaddr in mailTo:
 		sendTextMail(toaddr,mailSubject,mesg.as_string())
 else:
