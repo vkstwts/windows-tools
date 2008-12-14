@@ -3,9 +3,7 @@ import wt.type.TypedUtilityServiceHelper;
 import wt.part.WTPart;
 import wt.doc.WTDocument;
 import wt.fc.PersistenceHelper;
-//import com.ptc.core.meta.common.impl.WCTypeIdentifier;
 import com.ptc.core.meta.server.TypeIdentifierUtility;
-//import wt.session.SessionHelper;
 import wt.type.*;
 import wt.util.*;
 import com.ptc.core.meta.container.common.*;
@@ -21,24 +19,9 @@ import com.ptc.core.meta.type.mgmt.common.*;
 import com.ptc.core.meta.type.mgmt.server.*;
 import com.ptc.core.meta.type.mgmt.server.impl.*;
 import com.ptc.core.meta.type.mgmt.server.impl.service.*;
-import wt.method.RemoteMethodServer;
 
-RemoteMethodServer methodServer = RemoteMethodServer.getDefault();
-methodServer.setUserName("wcadmin");
-methodServer.setPassword("wcadmin");
-
-//println SessionHelper.getPrincipal().getName();
-//SessionHelper.manager.setAdministrator();
 
 String objectType ="wt.part.WTPart|com.nvidia.Part"
-//String objectType ="wt.change2.WTChangeRequest2"
-
-String persistedType = TypedUtilityServiceHelper.service.getExternalTypeIdentifier(objectType);
-//String persistedType = TypedUtilityServiceHelper.service.getPersistedType(objectType);
-System.out.println(persistedType);        
-//TypeIdentifier typeidentifier = (new TypeIdentifierUtility()).getTypeIdentifierFromPersistedType(persistedType);
-//System.out.println(typeidentifier);
-//TypedUtilityServiceHelper.service.initTypeDefinitions();
 
 TypeDefinitionReference typeDefRef = TypedUtilityServiceHelper.service.getTypeDefinitionReference("wt.part.WTPart");
 System.out.println("*********"+typeDefRef.toString());        
@@ -66,10 +49,9 @@ for(node in nodes){
                         println("----------->"+identifier);
                     ConstraintData constraintData = defaultView.getConstraintContainer().get(identifier);
                     println constraintData.getBindingRuleData();
-                    //println constraintData.getEnforcementRuleData();
                     DiscreteSet enforcementRuleData = constraintData.getEnforcementRuleData();
                     println enforcementRuleData;
-                    DiscreteSet newData = new DiscreteSet("Test2");
+                    DiscreteSet newData = new DiscreteSet("Test3");
                     constraintData.setEnforcementRuleData(enforcementRuleData.getUnion(newData))
                      println constraintData.getEnforcementRuleData();
                     defaultView.getConstraintContainer().put(identifier,constraintData);
@@ -84,11 +66,9 @@ for(node in nodes){
                  
                    childNode = TypeAdminHelper.service.undoCheckoutTypeNode((TypeDefinitionNodeView)childNode,true,java.util.Locale.US);
                     println exception;
-                   // childNode = TypeAdminHelper.service.checkinTypeNode(null,(TypeDefinitionNodeView)childNode,java.util.Locale.US);
-                        }
+                      }
                    }
-                     
-                }
+                 }
                 break;           
             }
             
