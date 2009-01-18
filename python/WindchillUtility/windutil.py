@@ -17,6 +17,9 @@ class Dispatcher:
 
     version=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe version'
     xconf=wind+'\\bin\\xconfmanager.bat -p'
+    xconfAdd=wind+'\\bin\\xconfmanager.bat -t wt.properties -p -s '
+    xconfReset=wind+'\\bin\\xconfmanager.bat -t wt.properties -p --reset '
+    xconfUndefine=wind+'\\bin\\xconfmanager.bat -t wt.properties -p --undefine '
     touch=unix+'touch.exe '+wind+'\\site.xconf'
     property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\codebase\\com\\ptc\\windchill\\esi\\esi.properties '+wind+'\\db\\db.properties | grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
@@ -39,7 +42,7 @@ class Dispatcher:
     
     monoservers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
-    prodservers = ['\\\\hqnvptas01','\\\\hqnvptws03','\\\\hqnvptws04','\\\\hqnvptws05','\\\\hqnvptws06']
+    prodservers = ['\\\\hqnvptas01','\\\\hqnvptws05','\\\\hqnvptws06']
 
     allservers = monoservers + stageservers + prodservers
 
@@ -57,6 +60,21 @@ class Dispatcher:
         searchString = raw_input("Enter Search String :")
         propertycmd=self.cmd+" "+server+" "+self.property+" "+searchString
         self.runCommand(propertycmd)
+
+    def addProperty(self,server):
+        propertyNameAndValue = raw_input("Ex: wt.inf.container.SiteOrganization.name=\"ACME Corporation\"\nEnter the Property name and value as shown above: \n")
+        addpropertycmd=self.cmd+" "+server+" "+self.xconfAdd+" "+propertyNameAndValue
+        self.runCommand(addpropertycmd)
+
+    def undefineProperty(self,server):
+        propertyName = raw_input("Ex: wt.inf.container.SiteOrganization.name \nEnter the Property name as shown above: ")
+        undefinepropertycmd=self.cmd+" "+server+" "+self.xconfUndefine+" "+propertyName
+        self.runCommand(undefinepropertycmd)
+
+    def resetProperty(self,server):
+        propertyName = raw_input("Ex: wt.inf.container.SiteOrganization.name \nEnter the Property name as shown above: ")
+        resetpropertycmd=self.cmd+" "+server+" "+self.xconfReset+" "+propertyName
+        self.runCommand(resetpropertycmd)
 
     def findServicesStatus(self,server):
         statuscmd=self.cmd+" "+server+" -c "+self.statusFile
@@ -206,13 +224,10 @@ class Dispatcher:
 serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All'] 
 commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Search Property files','findProperty'],
-                ['Search Log files','searchMSLogs'],
+                ['Add/Update Property ','addProperty'],
+                ['Undefine Property ','undefineProperty'],
+                ['Reset Property ','resetProperty'],
                 ['Ping server','pingServer'],
-                ['Tail MethodServer logs','tailMethodServerLogs'],
-                ['Tail Tomcat log','tailTomcatLog'],
-                ['Tail Apache Error log','tailApacheLog'],
-                ['View wt.properties','lessWT'],
-                ['View db.properties','lessDB'],
                 ['Find Services Status','findServicesStatus'],
                 ['Stop Services ','stopServices'],
                 ['Start Services ','startServices'],
@@ -220,6 +235,15 @@ commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Find Windchill Status','findWindchillStatus'],
                 ['Find System Info','findSystemInfo'],
                 ['Change Server','changeServer']]
+
+'''Other possible functions
+['Search Log files','searchMSLogs'],
+['Tail MethodServer logs','tailMethodServerLogs'],
+['Tail Tomcat log','tailTomcatLog'],
+['Tail Apache Error log','tailApacheLog'],
+['View wt.properties','lessWT'],
+['View db.properties','lessDB'],'''
+                
 
 def printServerOptions():
     print "\n\n Select a server:"
@@ -233,19 +257,34 @@ def printActions():
         print index+1, item[0]
     print "\n Enter 0  to exit"
     
+
 while True:
     printServerOptions()
-    serverOption = int(raw_input())
+    try:
+        serverOption = int(raw_input())
+    except ValueError:
+        print '\n\n\n\n ****** Please enter a numeric value ******'
+        continue 
     if serverOption==0:
         break
+    elif serverOption>len(serversList):
+        print '\n\n\n\n ****** Please enter valid entry ******'
+        continue
     while True:
         print '\n\n Selected Server :'+serversList[serverOption-1]
         printActions()
-        action = int(raw_input())
+        try:
+            action = int(raw_input())
+        except ValueError:
+            print '\n\n\n\n ****** Please enter a numeric value ******'
+            continue  
         if action==0:
             sys.exit()
         elif action==len(commandsList):
             break;
-        else:
+        elif action>0 and action<len(commandsList):
             d = Dispatcher()
             d.dispatch(commandsList[action-1][1])
+        else:
+            print '\n\n\n****** Please enter valid entry ******'
+            continue 
