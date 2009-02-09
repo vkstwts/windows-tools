@@ -7,14 +7,20 @@ import wt.fc.PersistenceHelper;
 import wt.part.WTPartHelper;
     
 class PartWhereUsed {
-   def static partSearchPatterns = ["190-5%","191-5%"] ;
-   def static topLevelPartPatterns = ["900","920"];
-   def static parentParts;
+   def partSearchPatterns = ["190-5%","191-5%"] ;
+   def topLevelPartPatterns = ["900","920"];
+   def parentParts; //list to keep track of already visited parent parts
+   def searchParts; //list to skip the different versions of the same part.
    
    public static void main(String[] args){
+        PartWhereUsed partWhereUsed = new PartWhereUsed();
+        partWhereUsed.execute();
+    }
+    
+    void execute() {
         Class className = wt.part.WTPart.class;
         partSearchPatterns.each() { number ->
-            parentParts=[];
+            searchParts=[];
             int[] index = new int[1];
             index[0] = 0;
             QuerySpec queryspec = new QuerySpec(className);
@@ -23,23 +29,22 @@ class PartWhereUsed {
             queryspec.appendWhere(new SearchCondition(wt.part.WTPart.class,"iterationInfo.latest",SearchCondition.IS_TRUE),index);
             QueryResult queryresult = PersistenceHelper.manager.find(queryspec);
             while (queryresult.hasMoreElements()) {
-               Object obj = queryresult.nextElement();
+                Object obj = queryresult.nextElement();
+                parentParts=[];
                 if (obj instanceof WTPart) {
                     WTPart part = (WTPart) obj;
-                    String displayIdentifier = part.getDisplayIdentifier();
                     WTPartMaster partMaster = (WTPartMaster) part.getMaster();
-                     if(!(parentParts.contains(partMaster.getNumber()))){
-                         parentParts.add(partMaster.getNumber());
+                     if(!(searchParts.contains(partMaster.getNumber()))){
+                         searchParts.add(partMaster.getNumber());
                          println("Part  :"+partMaster.getNumber());
                          getWhereUsed(partMaster);
                     }
-                     println "";
                 }    
             }
         }
     }
-
-    static  getWhereUsed(WTPartMaster partMaster) {
+    
+    void getWhereUsed(WTPartMaster partMaster) {
         QueryResult queryResult = WTPartHelper.service.getUsedByWTParts(partMaster);
         if(!queryResult.hasMoreElements()) {
             topLevelPartPatterns.each() { number->
@@ -51,7 +56,6 @@ class PartWhereUsed {
             Object obj = queryResult.nextElement();
             if (obj instanceof WTPart) {
                 WTPart part = (WTPart) obj;
-                String displayIdentifier = part.getDisplayIdentifier();
                 WTPartMaster parentPartMaster = (WTPartMaster) part.getMaster();
                 if(!(parentParts.contains(parentPartMaster.getNumber()))){ 
                     parentParts.add(parentPartMaster.getNumber());
@@ -60,5 +64,4 @@ class PartWhereUsed {
             }
         }
     }
-
 }
