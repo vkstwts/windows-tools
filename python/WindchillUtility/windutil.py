@@ -22,7 +22,9 @@ class Dispatcher:
     xconfUndefine=wind+'\\bin\\xconfmanager.bat -t codebase/wt.properties -p --undefine '
     touch=unix+'touch.exe '+wind+'\\site.xconf'
     property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\codebase\\com\\ptc\\windchill\\esi\\esi.properties '+wind+'\\db\\db.properties | grep.exe -in'
-    winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
+    ''' can also use command windchill wt.manager.RemoteManagerServer'''
+    winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status' 
+    winmethodstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe wt.method.RemoteMethodServer'
     tailtomcat=unix+'tail.exe  '+win9+'\\Tomcat\\logs\\PTCTomcat-stdout.log'
     tailapache=unix+'tail.exe  '+win9+'\\Apache\\logs\\error.log'
     lesswt=unix+'less.exe -iMN '+wind+'\\codebase\\wt.properties'
@@ -38,9 +40,11 @@ class Dispatcher:
     startFile='.\\windStart.bat'
     stageserversFile='.\\stagingServers.txt'
     prodserversFile='.\\prodServers.txt'
+    devengserversFile='.\\devEngServers.txt'
     tailmsFile='.\\tailms.bat'
     
     monoservers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
+    devengservers = ['\\\\hqdvptas01','\\\\hqdvptws01','\\\\hqdvptws02']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
     prodservers = ['\\\\hqnvptas01','\\\\hqnvptws05','\\\\hqnvptws06']
 
@@ -92,6 +96,8 @@ class Dispatcher:
     def findWindchillStatus(self,server):
         winstatuscmd=self.cmd+" "+server+" "+self.winstatus
         self.runCommand(winstatuscmd)
+        winmethodstatuscmd=self.cmd+" "+server+" "+self.winmethodstatus
+        self.runCommand(winmethodstatuscmd)
 
     def tailMethodServerLogs(self,server):
         tailmscmd=self.cmd+" "+server+" -c "+self.tailmsFile
@@ -202,6 +208,8 @@ class Dispatcher:
                 self.dispatchCluster(method,self.stageservers,self.stageserversFile)
             elif serverOption==serversList.index('Production')+1:
                 self.dispatchCluster(method,self.prodservers,self.prodserversFile)
+            elif serverOption==serversList.index('DevEng')+1:
+                self.dispatchCluster(method,self.devengservers,self.devengserversFile)
             elif serverOption==serversList.index('All')+1:
                 for index, server in enumerate(self.allservers):
                     if(index ==0):
@@ -222,7 +230,7 @@ class Dispatcher:
             self.error()
 
             
-serversList  = [ 'Dev','QA1','QA2','Training','Staging','Production','All'] 
+serversList  = [ 'Dev','QA1','QA2','DevEng','Training','Staging','Production','All'] 
 commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Search Property files','findProperty'],
                 ['Add/Update Property ','addProperty'],
