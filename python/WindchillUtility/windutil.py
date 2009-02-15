@@ -46,7 +46,7 @@ class Dispatcher:
     monoservers = ['\\\\hqdvpttmp01','\\\\hqqapttmp01','\\\\hqqapttmp02','\\\\hqdvpttg01']
     devengservers = ['\\\\hqdvptas01','\\\\hqdvptws01','\\\\hqdvptws02']
     stageservers = ['\\\\hqstptas01','\\\\hqstptws01','\\\\hqstptws02','\\\\hqstptws03']
-    prodservers = ['\\\\hqnvptas01','\\\\hqnvptws05','\\\\hqnvptws06']
+    prodservers = ['\\\\hqnvptas01','\\\\hqnvptws05','\\\\hqnvptws06','\\\\hqnvptws07']
 
     allservers = monoservers + stageservers + prodservers
 
