@@ -17,9 +17,9 @@ class Dispatcher:
 
     version=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe version'
     xconf=wind+'\\bin\\xconfmanager.bat -p'
-    xconfAdd=wind+'\\bin\\xconfmanager.bat -t wt.properties -p -s '
-    xconfReset=wind+'\\bin\\xconfmanager.bat -t wt.properties -p --reset '
-    xconfUndefine=wind+'\\bin\\xconfmanager.bat -t wt.properties -p --undefine '
+    xconfAdd=wind+'\\bin\\xconfmanager.bat -t codebase/wt.properties -p -s '
+    xconfReset=wind+'\\bin\\xconfmanager.bat -t codebase/wt.properties -p --reset '
+    xconfUndefine=wind+'\\bin\\xconfmanager.bat -t codebase/wt.properties -p --undefine '
     touch=unix+'touch.exe '+wind+'\\site.xconf'
     property=unix+'cat.exe '+wind+'\\codebase\\wt.properties '+wind+'\\codebase\\service.properties '+wind+'\\codebase\\WEB-INF\\ie.properties '+wind+'\\codebase\\com\\ptc\\windchill\\esi\\esi.properties '+wind+'\\db\\db.properties | grep.exe -in'
     winstatus=wind+'\\bin\\windchill.exe --java='+win9+'\\Java\\bin\\java.exe status'
@@ -62,9 +62,10 @@ class Dispatcher:
         self.runCommand(propertycmd)
 
     def addProperty(self,server):
-        propertyNameAndValue = raw_input("Ex: wt.inf.container.SiteOrganization.name=\"ACME Corporation\"\nEnter the Property name and value as shown above: \n")
+        propertyNameAndValue = raw_input("Ex: wt.inf.container.SiteOrganization.name=\"ACME Corporation\"\nEnter the Property name and value as shown above: ")
         addpropertycmd=self.cmd+" "+server+" "+self.xconfAdd+" "+propertyNameAndValue
         self.runCommand(addpropertycmd)
+        
 
     def undefineProperty(self,server):
         propertyName = raw_input("Ex: wt.inf.container.SiteOrganization.name \nEnter the Property name as shown above: ")
@@ -233,7 +234,6 @@ commandsList = [ ['Propogate Xconf','propogateXconf'],
                 ['Start Services ','startServices'],
                 ['Find Windchill Version','findVersion'],
                 ['Find Windchill Status','findWindchillStatus'],
-                ['Find System Info','findSystemInfo'],
                 ['Change Server','changeServer']]
 
 '''Other possible functions
@@ -242,7 +242,8 @@ commandsList = [ ['Propogate Xconf','propogateXconf'],
 ['Tail Tomcat log','tailTomcatLog'],
 ['Tail Apache Error log','tailApacheLog'],
 ['View wt.properties','lessWT'],
-['View db.properties','lessDB'],'''
+['View db.properties','lessDB'],
+['Find System Info','findSystemInfo'],'''
                 
 
 def printServerOptions():
